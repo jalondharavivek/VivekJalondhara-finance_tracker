@@ -59,7 +59,7 @@ const AddTransaction = () => {
                   <option>Home Expense</option>
                   <option>Personal Expense</option>
                   <option>Income</option>
-                  <option>Income</option>
+                  
                 </select>
               </div>
               <div className="divpadding">
