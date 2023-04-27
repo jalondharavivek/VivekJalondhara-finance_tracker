@@ -18,6 +18,7 @@ table, th, td {
     padding-top: 25px;
     align-items: center;
     display: inline-block;
+
   }
   .addtransaction {
     background-color: #67a3db; /* Green */
@@ -31,4 +32,28 @@ table, th, td {
     border-radius: 5px;
    margin-right: 700px;
    cursor: pointer;
+  }
+  .imgwidth{
+    width: 40px;
+  }
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  .arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    margin: 2px;
+  }
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+  .vvv{
+    margin-top: 50px;
+  }
+  .itemd{
+    color: red;
   }
