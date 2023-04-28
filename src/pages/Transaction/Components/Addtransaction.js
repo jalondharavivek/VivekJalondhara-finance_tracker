@@ -172,6 +172,7 @@ const AddTransaction = () => {
                 </label>
               </div>
               <div>
+              <input type="hidden" id="custId" name="custId" value="3487"/>
                 <input
                   className="allinputbox"
                   type="date"
