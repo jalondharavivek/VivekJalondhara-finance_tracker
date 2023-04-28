@@ -8,6 +8,31 @@ const Financetrackerform = () => {
   console.log(alltransaction, "vivekvalue");
   const [order, setOrder] = useState("default");
   const [order1, setOrder1] = useState("default");
+  console.log("datttttttttttttttt length ", alltransaction.length);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  console.log(currentPage, "vivek");
+  const recordsPerPage = 3;
+  
+
+  const page = Math.ceil(alltransaction.length / recordsPerPage);
+  console.log(page, "vivek3");
+  console.log(page, "fgggggggggggggggggg");
+  // const records = alltransaction.slice(firstindex, lastindex);
+
+  const [records, setRecords] = useState([]);
+  useEffect(() => {
+
+    const lastindex = currentPage * recordsPerPage;
+  const firstindex = lastindex - recordsPerPage;
+    setRecords(alltransaction.slice(firstindex, lastindex));
+  }, [currentPage, alltransaction]);
+
+  console.log(records, "dfgf");
+  console.log(records, "yeryyyyyyyyyyyyyy");
+  console.log(page, "ffffffffffffffffffffffffffffff");
+  const number = [...Array(page + 1).keys()].slice(1);
+  console.log(number, "sfaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
   const navigate = useNavigate();
 
   const [data1, setData] = useState([]);
@@ -32,10 +57,8 @@ const Financetrackerform = () => {
   //   setgrpby(datagrp(transactionvalue));
   // };
 
-
-
   const [searchVal, setSearchVal] = useState("");
-  console.log(searchVal,"fsf");
+
   function handleSearchClick() {
     const key = {
       monthyear: "monthyear",
@@ -44,24 +67,28 @@ const Financetrackerform = () => {
       amount: "amount",
     };
     // console.log(searchVal);
-      if (searchVal === "") { setData(alltransaction); return; }
-      const filterBySearch = data1.filter((key) => {
-          if (key.toLowerCase()
-              .includes(searchVal.toLowerCase())) { return key; }
-      })
-      setData(filterBySearch);
+    if (searchVal === "") {
+      setData(alltransaction);
+      return;
+    }
+    const filterBySearch = data1.filter((key) => {
+      if (key.toLowerCase().includes(searchVal.toLowerCase())) {
+        return key;
+      }
+    });
+    setData(filterBySearch);
   }
 
   const datagrph = (val) => {
     const p = val.target.value;
     if (p === "None") {
       const GROUPBY1 = [...alltransaction];
-      console.log("vivekkkk", GROUPBY1);
+      // console.log("vivekkkk", GROUPBY1);
       setData(GROUPBY1);
     } else {
-      console.log("valll", p, "vvdvsvsvsvsv");
+      // console.log("valll", p, "vvdvsvsvsvsv");
       const GROUPBY = [...alltransaction];
-      console.log(GROUPBY, "valueeeeeee");
+      // console.log(GROUPBY, "valueeeeeee");
       const key = {
         monthyear: "monthyear",
         transactiondate: "transactiondate",
@@ -75,7 +102,7 @@ const Financetrackerform = () => {
       }, {});
 
       setData(cats);
-      console.log(cats, "dgdg");
+      // console.log(cats, "dgdg");
       // console.log("heeeeee", cats);
       // console.log(datagrp, "vviviviviv");
     }
@@ -84,24 +111,26 @@ const Financetrackerform = () => {
   // console.log(datagrp, "onnnnn");
 
   const sortdatacolumn = (col) => {
+    console.log(col, "1212");
     if (order === "default") {
-      console.log(col, "dtaaaaaa");
-      const sorted = [...data1].sort((a, b) =>
+      // console.log(col, "dtaaaaaa");
+      const sorted = [...records].sort((a, b) =>
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
-      console.log(sorted, "dtaaaaaa");
-      setData(sorted);
+
+      // console.log(sorted, "dtaaaaaa");
+      setRecords(sorted);
       setOrder("DSC");
     } else if (order === "DSC") {
-      console.log(col, "dtaaaaaa");
-      const sorted = [...data1].sort((a, b) =>
+      // console.log(col, "dtaaaaaa");
+      const sorted = [...records].sort((a, b) =>
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
-      console.log(sorted, "dtaaaaaa");
-      setData(sorted);
+      // console.log(sorted, "dtaaaaaa");
+      setRecords(sorted);
       setOrder("default");
     } else if (order === "fordefault") {
-      console.log(col, "dtaaaaaa");
+      // console.log(col, "dtaaaaaa");
       // const sorted = [...alltransaction]
       // console.log(sorted, "dtaaaaaa");
       setAlltransaction(
@@ -126,36 +155,32 @@ const Financetrackerform = () => {
     // })
     // console.log(conv,"object of arrrrrrr");
   };
-
-  const sortdatacolumn1 = (col,item) => {
-    const sorted = {...data1 };
+  const changepage = (id) => {
+    setCurrentPage(id);
+  };
+  const sortdatacolumn1 = (col, item) => {
+    const sorted = { ...data1 };
     // console.log( item,col,"segggsg");
     // console.log("firsttttt", sorted);
-    //  console.log("ddvdvgd",Object.keys(data1)); 
+    //  console.log("ddvdvgd",Object.keys(data1));
     // Object.keys(data1).map((a,b)=>{
 
-      // console.log("vvvvvvv", data1[a]);
-      [ addtransaction[item]].map((d,e)=>{
-       
-        if (order1 === "default") {
-         
-          const st = d.sort((p, q) =>
-            p[col].toLowerCase() > q[col].toLowerCase() ? 1 : -1
-          );
-          // console.log( "dtaaaaaa");
-          setData(st);
-          setOrder1("DSC");
-          console.log(st,"gdgdgdg");
-        }
-       
-        
-      })
-    
+    // console.log("vvvvvvv", data1[a]);
+    [addtransaction[item]].map((d, e) => {
+      if (order1 === "default") {
+        const st = d.sort((p, q) =>
+          p[col].toLowerCase() > q[col].toLowerCase() ? 1 : -1
+        );
+        // console.log( "dtaaaaaa");
+        setData(st);
+        setOrder1("DSC");
+        // console.log(st,"gdgdgdg");
+      }
+    });
+
     // })
     // console.log("aonly",Object.keys(sorted));
     //  console.log("bonly"onl");
-
-   
 
     // if (order === "default") {
     //   const sorted = [data1].sort((a, b) =>
@@ -169,12 +194,16 @@ const Financetrackerform = () => {
     //   setOrder("DSC");
     // }
   };
-  const viewd = (df) => {
-    console.log(df,"view details");
-    data1[df].map((d,e)=>{
-    console.log(d,"vvv");
-    })
-  }
+  const viewd = (AddTransaction, i, ireceipt) => {
+    console.log(
+      "bbbbbbbbb",
+      AddTransaction.receipt,
+      i,
+      ireceipt,
+      "view details"
+    );
+    navigate(`/transaction/view/${i}`, { state: AddTransaction, i });
+  };
   return (
     <div className="maindisplay">
       <div className="financetrackerheading">
@@ -186,8 +215,10 @@ const Financetrackerform = () => {
             ADD +
           </p>
         </div>
-        <input onClick={handleSearchClick} onChange={e => setSearchVal(e.target.value)}>
-                </input>
+        <input
+          onClick={handleSearchClick}
+          onChange={(e) => setSearchVal(e.target.value)}
+        ></input>
         <div>
           <span>Group By : </span>
           <select name="groupbya" onInput={(event) => datagrph(event)}>
@@ -199,10 +230,11 @@ const Financetrackerform = () => {
           </select>
         </div>
       </div>
-      {Array.isArray(alltransaction) ? (
+      {Array.isArray(data1) ? (
         <div className="Tablefinancem">
           <table class="vvv">
             <tr>
+              <th>id</th>
               <th onClick={() => sortdatacolumn("transactiondate")}>
                 Transaction Date{" "}
                 {order === "default" ? (
@@ -268,11 +300,11 @@ const Financetrackerform = () => {
                 )}
               </th>
               <th>Action </th>
-              
             </tr>
 
-            {data1.map((addtransaction, index) => (
+            {records.map((addtransaction, index) => (
               <tr key={index}>
+                <td>{index}</td>
                 <td>{addtransaction.transactiondate} </td>
                 <td>{addtransaction.monthyear}</td>
                 <td>{addtransaction.transactiontype}</td>
@@ -286,10 +318,47 @@ const Financetrackerform = () => {
                   <img src={addtransaction.receipt} className="imgwidth" />
                 </td>
                 <td>{addtransaction.notes}</td>
-                <td onClick={() => viewd(addtransaction.monthyear)} >View</td>
+                <td
+                  onClick={() =>
+                    viewd(addtransaction, index, addtransaction.receipt)
+                  }
+                >
+                  View
+                </td>
               </tr>
             ))}
           </table>
+          <nav>
+            <ul className="paggination">
+              {/* {           number.map((n,i)=>{
+
+<select>
+  <option key={i}>
+    {n}
+  </option>
+</select>
+
+})
+} */}
+              <li className="page-item">
+                <a href="#" className="page-link">
+                  previous
+                </a>
+              </li>
+
+              {number.map((n, i) => (
+                <li className="page-item" key={i}>
+                  <a
+                    onClick={() => changepage(n)}
+                    className="page-item"
+                    href="#"
+                  >
+                    {n}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       ) : (
         <div>
@@ -332,7 +401,7 @@ const Financetrackerform = () => {
                   <th>fromaccount</th>
                   <th>toaccount</th>
                   <th>amount</th>
-                  <th onClick={() => sortdatacolumn1("notes",item)}>notes</th>
+                  <th onClick={() => sortdatacolumn1("notes", item)}>notes</th>
                 </tr>
 
                 {data1[item].map((groupbydata, key) => (

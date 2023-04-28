@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import getBase64 from "get-base64";
 const AddTransaction = () => {
   const navigate = useNavigate();
+  let id = 1;
   const [addtransaction, setAddtransaction] = useState({
     transactiondate: "",
     monthyear: "",
@@ -15,6 +16,8 @@ const AddTransaction = () => {
     amount: "",
     receipt: "",
     notes: "",
+  
+    id:id++
   });
   const backtransactionpage = () => {
     navigate("/");
