@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React from "react";
 import "./views.css";
-import { Navigate } from "react-router-dom";
+import { navigate } from "react-router-dom";
 const Viewtransaction = (index) => {
 const navigate = useNavigate()
   const viewdata = useLocation(index);
@@ -22,8 +22,9 @@ const navigate = useNavigate()
               <label>ID: {viewdata.state.id}</label>
               
               </div> */}
-            
+            {viewdata.state.id}
               <div>
+
               <label>Transaction Date :- {viewdata.state.transactiondate}  </label>
                 {/* <p>Transaction Date : - {viewdata.state.transactiondate} </p> */}
               </div>

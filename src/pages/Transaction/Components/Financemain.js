@@ -8,25 +8,45 @@ const Financetrackerform = () => {
   console.log(alltransaction, "vivekvalue");
   const [order, setOrder] = useState("default");
   const [order1, setOrder1] = useState("default");
+  const [search, seatSearch] = useState();
   console.log("datttttttttttttttt length ", alltransaction.length);
-
+  const [filterval, setFilval] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   console.log(currentPage, "vivek");
   const recordsPerPage = 3;
-  
-
-  const page = Math.ceil(alltransaction.length / recordsPerPage);
+  const [records, setRecords] = useState([]);
+  const [page, setPage] = useState(0);
   console.log(page, "vivek3");
   console.log(page, "fgggggggggggggggggg");
   // const records = alltransaction.slice(firstindex, lastindex);
 
-  const [records, setRecords] = useState([]);
   useEffect(() => {
-
     const lastindex = currentPage * recordsPerPage;
-  const firstindex = lastindex - recordsPerPage;
-    setRecords(alltransaction.slice(firstindex, lastindex));
-  }, [currentPage, alltransaction]);
+    const firstindex = lastindex - recordsPerPage;
+
+    if (filterval) {
+      const searchdata = alltransaction.filter(
+        (item) =>
+          item.monthyear.toLowerCase().includes(filterval.toLowerCase()) ||
+          item.transactiondate
+            .toLowerCase()
+            .includes(filterval.toLowerCase()) ||
+          item.transactiontype
+            .toLowerCase()
+            .includes(filterval.toLowerCase()) ||
+          item.notes.toLowerCase().includes(filterval.toLowerCase()) ||
+          item.fromaccount.toLowerCase().includes(filterval.toLowerCase()) ||
+          item.toaccount.toLowerCase().includes(filterval.toLowerCase()) ||
+          item.amount.toLowerCase().includes(filterval.toLowerCase())
+      );
+      setRecords(searchdata.slice(firstindex, lastindex));
+
+      setPage(Math.ceil(searchdata.length / recordsPerPage));
+    } else {
+      setRecords(alltransaction.slice(firstindex, lastindex));
+      setPage(Math.ceil(alltransaction.length / recordsPerPage));
+    }
+  }, [currentPage, alltransaction, filterval]);
 
   console.log(records, "dfgf");
   console.log(records, "yeryyyyyyyyyyyyyy");
@@ -57,32 +77,30 @@ const Financetrackerform = () => {
   //   setgrpby(datagrp(transactionvalue));
   // };
 
-  const [searchVal, setSearchVal] = useState("");
-
-  function handleSearchClick() {
-    const key = {
-      monthyear: "monthyear",
-      transactiondate: "transactiondate",
-      transactiontype: "transactiontype",
-      amount: "amount",
-    };
-    // console.log(searchVal);
-    if (searchVal === "") {
-      setData(alltransaction);
-      return;
-    }
-    const filterBySearch = data1.filter((key) => {
-      if (key.toLowerCase().includes(searchVal.toLowerCase())) {
-        return key;
-      }
-    });
-    setData(filterBySearch);
-  }
+  // function handleSearchClick() {
+  //   const key = {
+  //     monthyear: "monthyear",
+  //     transactiondate: "transactiondate",
+  //     transactiontype: "transactiontype",
+  //     amount: "amount",
+  //   };
+  //   // console.log(searchVal);
+  //   if (searchVal === "") {
+  //     setData(alltransaction);
+  //     return;
+  //   }
+  //   const filterBySearch = data1.filter((key) => {
+  //     if (key.toLowerCase().includes(searchVal.toLowerCase())) {
+  //       return key;
+  //     }
+  //   });
+  //   setData(filterBySearch);
+  // }
 
   const datagrph = (val) => {
     const p = val.target.value;
     if (p === "None") {
-      const GROUPBY1 = [...alltransaction];
+      const GROUPBY1 = [...records];
       // console.log("vivekkkk", GROUPBY1);
       setData(GROUPBY1);
     } else {
@@ -117,24 +135,34 @@ const Financetrackerform = () => {
       const sorted = [...records].sort((a, b) =>
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
-
+      const lastindex = currentPage * recordsPerPage;
+      const firstindex = lastindex - recordsPerPage;
+      setRecords(sorted.slice(firstindex, lastindex));
       // console.log(sorted, "dtaaaaaa");
-      setRecords(sorted);
+      // setRecords(sorted);
       setOrder("DSC");
     } else if (order === "DSC") {
       // console.log(col, "dtaaaaaa");
       const sorted = [...records].sort((a, b) =>
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
+      const lastindex = currentPage * recordsPerPage;
+      const firstindex = lastindex - recordsPerPage;
+      setRecords(sorted.slice(firstindex, lastindex));
       // console.log(sorted, "dtaaaaaa");
-      setRecords(sorted);
-      setOrder("default");
+      // setRecords(sorted);
+      setOrder("fordefault");
     } else if (order === "fordefault") {
       // console.log(col, "dtaaaaaa");
       // const sorted = [...alltransaction]
       // console.log(sorted, "dtaaaaaa");
-      setAlltransaction(
-        JSON.parse(localStorage.getItem("addtransaction") || "[]")
+      const lastindex = currentPage * recordsPerPage;
+      const firstindex = lastindex - recordsPerPage;
+      setRecords(
+        JSON.parse(localStorage.getItem("addtransaction") || "[]").slice(
+          firstindex,
+          lastindex
+        )
       );
       setOrder("default");
     }
@@ -194,16 +222,22 @@ const Financetrackerform = () => {
     //   setOrder("DSC");
     // }
   };
-  const viewd = (AddTransaction, i, ireceipt) => {
-    console.log(
-      "bbbbbbbbb",
-      AddTransaction.receipt,
+  const editdata = (AddTransaction, i, ireceipt) => {
+    console.log("traaaaa", AddTransaction, i, ireceipt, "view details");
+    navigate(`/transaction/edit/${AddTransaction.id}`, {
+      state: AddTransaction.id,
+      AddTransaction,
       i,
-      ireceipt,
-      "view details"
-    );
-    navigate(`/transaction/view/${i}`, { state: AddTransaction, i });
+    });
   };
+  const viewd = (AddTransaction, i, ireceipt) => {
+    console.log("bbbbbbbbb", AddTransaction.id, ireceipt, "view details");
+    navigate(`/transaction/view/${AddTransaction.id}`, {
+      state: AddTransaction,
+      i,
+    });
+  };
+
   return (
     <div className="maindisplay">
       <div className="financetrackerheading">
@@ -216,8 +250,8 @@ const Financetrackerform = () => {
           </p>
         </div>
         <input
-          onClick={handleSearchClick}
-          onChange={(e) => setSearchVal(e.target.value)}
+          value={filterval}
+          onInput={(e) => setFilval(e.target.value)}
         ></input>
         <div>
           <span>Group By : </span>
@@ -300,6 +334,7 @@ const Financetrackerform = () => {
                 )}
               </th>
               <th>Action </th>
+              <th>Action </th>
             </tr>
 
             {records.map((addtransaction, index) => (
@@ -325,6 +360,13 @@ const Financetrackerform = () => {
                 >
                   View
                 </td>
+                <td
+                  onClick={() =>
+                    editdata(addtransaction, index, addtransaction.receipt)
+                  }
+                >
+                  edit
+                </td>
               </tr>
             ))}
           </table>
@@ -340,7 +382,7 @@ const Financetrackerform = () => {
 
 })
 } */}
-              <li className="page-item">
+              <li className="page-item1">
                 <a href="#" className="page-link">
                   previous
                 </a>
@@ -350,13 +392,18 @@ const Financetrackerform = () => {
                 <li className="page-item" key={i}>
                   <a
                     onClick={() => changepage(n)}
-                    className="page-item"
+                    className="page-item1"
                     href="#"
                   >
                     {n}
                   </a>
                 </li>
               ))}
+              <li className="page-item1">
+                <a href="#" className="page-link">
+                  Next
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
