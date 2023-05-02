@@ -3,12 +3,16 @@ import { useState } from "react";
 import "./financemain.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import AddTransaction from "./Addtransaction";
 const Financetrackerform = () => {
+
+
+  
   const [alltransaction, setAlltransaction] = useState([]);
   console.log(alltransaction, "vivekvalue");
   const [order, setOrder] = useState("default");
   const [order1, setOrder1] = useState("default");
-  const [search, seatSearch] = useState();
+  const [shorto, setShorto] = useState();
   console.log("datttttttttttttttt length ", alltransaction.length);
   const [filterval, setFilval] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +46,49 @@ const Financetrackerform = () => {
       setRecords(searchdata.slice(firstindex, lastindex));
 
       setPage(Math.ceil(searchdata.length / recordsPerPage));
+      // }else if(shorto){
+      //   if (order === "default") {
+
+      //     const sorted = [...addtransaction].sort((a, b) =>
+      //       a[shorto].toLowerCase() > b[shorto].toLowerCase() ? 1 : -1
+      //     );
+      //     const lastindex = currentPage * recordsPerPage;
+      //     const firstindex = lastindex - recordsPerPage;
+      //     setRecords(sorted.slice(firstindex, lastindex));
+      //     // console.log(sorted, "dtaaaaaa");
+      //     // setRecords(sorted);
+      //     setPage(Math.ceil(sorted.length / recordsPerPage))
+      //     setOrder("DSC");
+      // }else if (order === "DSC") {
+      //   // console.log(col, "dtaaaaaa");
+      //   const sorted = [...records].sort((a, b) =>
+      //     a[shorto].toLowerCase() < b[shorto].toLowerCase() ? 1 : -1
+      //   );
+      //   const lastindex = currentPage * recordsPerPage;
+      //   const firstindex = lastindex - recordsPerPage;
+      //   setRecords(sorted.slice(firstindex, lastindex));
+      //   // console.log(sorted, "dtaaaaaa");
+      //   // setRecords(sorted);
+      //   setPage(Math.ceil(sorted.length / recordsPerPage))
+      //   // console.log(sorted, "dtaaaaaa");
+      //   // setRecords(sorted);
+      //   setOrder("fordefault");
+      // } else if (order === "fordefault") {
+      //   // console.log(col, "dtaaaaaa");
+      //   // const sorted = [...alltransaction]
+      //   // console.log(sorted, "dtaaaaaa");
+      //   const lastindex = currentPage * recordsPerPage;
+      //   const firstindex = lastindex - recordsPerPage;
+      //   setRecords(
+      //     JSON.parse(localStorage.getItem("addtransaction") || "[]").slice(
+      //       firstindex,
+      //       lastindex
+      //     )
+      //   );
+      //   setOrder("default");
+      // }
+    } else if (shorto) {
+      <sortdatacolumn />;
     } else {
       setRecords(alltransaction.slice(firstindex, lastindex));
       setPage(Math.ceil(alltransaction.length / recordsPerPage));
@@ -129,10 +176,10 @@ const Financetrackerform = () => {
   // console.log(datagrp, "onnnnn");
 
   const sortdatacolumn = (col) => {
-    console.log(col, "1212");
+    setShorto(col);
     if (order === "default") {
       // console.log(col, "dtaaaaaa");
-      const sorted = [...records].sort((a, b) =>
+      const sorted = [...alltransaction].sort((a, b) =>
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
       const lastindex = currentPage * recordsPerPage;
@@ -238,6 +285,11 @@ const Financetrackerform = () => {
     });
   };
 
+  const logout = () => {
+    localStorage.removeItem("loggin");
+    navigate("login")
+  }
+
   return (
     <div className="maindisplay">
       <div className="financetrackerheading">
@@ -245,14 +297,20 @@ const Financetrackerform = () => {
       </div>
       <div className="addandgroupby">
         <div>
-          <p className="addtransaction" onClick={addtransaction}>
-            ADD +
+          <p className="addtransaction" onClick={()=>logout()}>
+            logout
           </p>
         </div>
+        
         <input
           value={filterval}
           onInput={(e) => setFilval(e.target.value)}
         ></input>
+          <div>
+          <p className="addtransaction" onClick={addtransaction}>
+            ADD +
+          </p>
+        </div>
         <div>
           <span>Group By : </span>
           <select name="groupbya" onInput={(event) => datagrph(event)}>
@@ -389,10 +447,15 @@ const Financetrackerform = () => {
               </li>
 
               {number.map((n, i) => (
-                <li className="page-item" key={i}>
+                <li
+                  className={`page-item ${currentPage === n ? "active" : ""}`}
+                  key={i}
+                >
                   <a
+                    className={`page-item page-item1 ${
+                      currentPage === n ? "active" : ""
+                    }`}
                     onClick={() => changepage(n)}
-                    className="page-item1"
                     href="#"
                   >
                     {n}
@@ -443,7 +506,9 @@ const Financetrackerform = () => {
                 </div>
                 <tr key={index}>
                   <th> Transaction Date </th>
-                  <th>Month year</th>
+                  <th onClick={() => sortdatacolumn("monthyear")}>
+                    Month year
+                  </th>
                   <th>transactiontype</th>
                   <th>fromaccount</th>
                   <th>toaccount</th>

@@ -1,0 +1,36 @@
+.loginmainclass{
+    width: 30%;
+    /* max-width: 600px; */
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #e9e9e9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(138, 52, 52, 0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+   
+}
+.loginheading{
+    color: rgb(68, 119, 163);
+    font-weight: 700;
+    font-size :2ch;
+    text-decoration-line: underline; 
+}
+.passwordpadding{
+    margin-top: 10px;
+    margin-bottom: 10px;  
+      display: flex;
+  }
+  .allinpulfieldlabel{
+    display: flex;
+
+}
+.loginsubmit{
+    margin-top: 20px;
+border-radius: 10px;
+}
+.registerlinkclass{
+    display: flex;
+    margin-top: 10px;
+}

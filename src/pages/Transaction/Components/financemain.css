@@ -120,10 +120,10 @@
     border: 1px solid #ddd;
   }
   
-  .page-item1.active {
-    background-color: #4CAF50;
+  .active{
+    background-color: #4da6bd;
     color: white;
-    border: 1px solid #4CAF50;
+   
   }
   li{
     list-style-type: none;
