@@ -3,7 +3,7 @@ import React from "react";
 import "./views.css";
 import { navigate } from "react-router-dom";
 const Viewtransaction = (index) => {
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const viewdata = useLocation(index);
   console.log(viewdata);
   console.log(viewdata.state.receipt, "Sfsfsfsf");
@@ -12,53 +12,65 @@ const navigate = useNavigate()
   };
   return (
     <div>
-      <div>
+      <div className="mainclassaddtransaction">
         <div>
-          <span>Transaction Details </span>
+          <span className="tradetailsview">Transaction Details </span>
         </div>
         <div className="viewmain">
-{/*         
-              <div>
-              <label>ID: {viewdata.state.id}</label>
-              
-              </div> */}
-            {viewdata.state.id}
-              <div>
-
-              <label>Transaction Date :- {viewdata.state.transactiondate}  </label>
-                {/* <p>Transaction Date : - {viewdata.state.transactiondate} </p> */}
-              </div>
-            
-            <div>
-            <label>Month Year :- {viewdata.state.monthyear}  </label>
-              {/* <p>Month Year : - {viewdata.state.monthyear}</p> */}
-            </div>
-            <div>
-            <label>transactiontype :- {viewdata.state.transactiontype}  </label>
-              {/* <p>Transaction Type : - {viewdata.state.transactiontype}</p> */}
-            </div>
-            <div>
-            <label>From Account :- {viewdata.state.fromaccount}  </label>
-              {/* <p>From Account : - {viewdata.state.fromaccount}</p> */}
-            </div>
-            <div>
-            <label>To Acccount :- {viewdata.state.toaccount}  </label>
-              {/* <p>To Acccount : - {viewdata.state.toaccount} </p> */}
-            </div>
-            <div>
-            <label>Receipt :-  </label>
-              <img src={viewdata.state.receipt} className="IMGWIDTH"></img>
-            </div>
-            <div>
-            <label>Notes :- {viewdata.state.notes}  </label>
-              {/* <p>Notes: - {viewdata.state.notes} </p> */}
-            </div>
-            <p className="addtransactionback" onClick={backtransactionpage}>
-                    Back
-                  </p>
+          <table className="vvv">
+            <tr>
+              <td> Id:{viewdata.state.id}</td>
+            </tr>
+            <tr>
+              <td>
+                <label>
+                  Transaction Date :- {viewdata.state.transactiondate}{" "}
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Month Year :- {viewdata.state.monthyear} </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {" "}
+                <label>
+                  transactiontype :- {viewdata.state.transactiontype}{" "}
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {" "}
+                <label>From Account :- {viewdata.state.fromaccount} </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {" "}
+                <label>To Acccount :- {viewdata.state.toaccount} </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {" "}
+                <label>Receipt :- </label>
+                <img src={viewdata.state.receipt} className="IMGWIDTH"></img>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {" "}
+                <label>Notes :- {viewdata.state.notes} </label>
+              </td>
+            </tr>
+          </table>
+          <p className="addtransactionback" onClick={backtransactionpage}>
+            Back
+          </p>
         </div>
-      
-       
       </div>
     </div>
   );

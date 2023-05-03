@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate,  } from "react-router-dom";
 import CryptoJS from "crypto-js";
 
-const Authguard = ({ children }) => {
+const Unauthguard = ({ children }) => {
 
   const authtoken = JSON.parse(localStorage.getItem("loggin"))
 //   const secretPass =
@@ -10,14 +10,14 @@ const Authguard = ({ children }) => {
 // const bytes = CryptoJS.AES.decrypt(authtoken, secretPass);
 // const loginenctoken = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-
-  // useEffect(() => {
+//   console.log(loginenctoken, "auth");
+//   // useEffect(() => {
     
 
 
   if (authtoken === true) {
-    console.log("success")
-    return children;
+    return <Navigate to="/" />
+    // return children;
   } else {
     return <Navigate to="/login" />;
   }
@@ -25,4 +25,4 @@ const Authguard = ({ children }) => {
   // }, []);
 };
 
-export default Authguard;
+export default Unauthguard;
