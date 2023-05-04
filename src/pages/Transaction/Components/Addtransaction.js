@@ -144,12 +144,12 @@ const AddTransaction = () => {
       addtransaction.toaccount === "Select To Account"
     ) {
       error.toaccount = "Select To Account";
-    } else if (addtransaction.fromaccount === addtransaction.toaccount) {
+    } else if (addtransaction.toaccount === addtransaction.fromaccount) {
       error.toaccount = "Select To and From Diffrent Account";
     }
 
-    if (addtransaction.amount.trim() === "") {
-      error.amount = "Enter A Amount";
+    if (addtransaction.amount <= 0) {
+      error.amount = "Enter Valid amount";
     } 
     if (addtransaction.receipt === "") {
       error.receipt = "Upload Receipt";
@@ -303,7 +303,7 @@ const AddTransaction = () => {
                   name="amount"
                   onInput={handleInput}
                   className="allinputbox"
-                  type="text"
+                  type="number"
                 ></input>
                 <div>
                   {error.amount && <p className="valicolor">{error.amount}</p>}

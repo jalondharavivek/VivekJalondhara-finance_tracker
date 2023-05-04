@@ -46,7 +46,6 @@ const Financetrackerform = (prop) => {
     }
     if (shorto) {
       const col = shorto;
-   
 
       if (order === 1) {
         const sorted = [...data].sort((a, b) =>
@@ -58,12 +57,23 @@ const Financetrackerform = (prop) => {
           a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
         );
         data = sorted;
-      
       }
-
- 
     }
+    if (shorto) {
+      
 
+      if (order === 1) {
+        const sorted = [...data].sort((a, b) =>
+             a.amount - b.amount
+        );
+        data = sorted;
+      } else if (order === 2) {
+        const sorted = [...data].sort((a, b) =>
+           b.amount - a.amount
+        );
+        data = sorted;
+      }
+    }
     setRecords(data.slice(firstindex, lastindex));
     setPage(Math.ceil(data.length / recordsPerPage));
   }, [currentPage, alltransaction, filterval, shorto, order]);
@@ -78,10 +88,7 @@ const Financetrackerform = (prop) => {
 
   useEffect(() => {
     setAlltransaction(prop.all);
-  
   }, [prop]);
-
-
 
   //   // for (let key of Object.keys(sorted)) {
   //   //   return [key, sorted[key]];
@@ -115,6 +122,49 @@ const Financetrackerform = (prop) => {
     }
   };
 
+
+
+
+
+
+
+
+  const numericamount = (sort) => {
+    console.log("sortprevalue=", sortprevalue);
+    console.log("sort", sort);
+    if (sortprevalue === "") {
+      setOrder(1);
+      setShorto(sort);
+      setPrevalue(sort);
+    } else if (sortprevalue === sort) {
+      if (order === 1) {
+        setOrder(2);
+      } else if (order === 2) {
+        setOrder(0);
+      } else {
+        setOrder(1);
+      }
+
+      setShorto(sort);
+      setPrevalue(sort);
+    } else if (sortprevalue !== sort) {
+      setOrder(1);
+      setShorto(sort);
+      setPrevalue(sort);
+    } else {
+      setOrder(0);
+      setShorto(sort);
+      setPrevalue(sort);
+    }
+  };
+
+
+
+
+
+
+
+
   //   // }
   //   // const conv = Object.keys(sorted)
   //   // conv.map((d,e)=>{
@@ -126,8 +176,6 @@ const Financetrackerform = (prop) => {
   const changepage = (id) => {
     setCurrentPage(id);
   };
-
-
 
   const editdata = (AddTransaction, i, ireceipt) => {
     navigate(`/transaction/edit/${AddTransaction.id}`, {
@@ -146,7 +194,8 @@ const Financetrackerform = (prop) => {
   return (
     <div className="maindisplay">
       <div className="addandgroupby">
-      <label>Search :</label>  <input
+        <label>Search :</label>{" "}
+        <input
           value={filterval}
           onInput={(e) => setFilval(e.target.value)}
         ></input>
@@ -201,7 +250,7 @@ const Financetrackerform = (prop) => {
                   <i className="arrow down"></i>
                 )}
               </th>
-              <th onClick={() => shortfun("amount")}>
+              <th onClick={() => numericamount("amount")}>
                 Amount{" "}
                 {order === "ASC" ? (
                   <i className="arrow up"></i>

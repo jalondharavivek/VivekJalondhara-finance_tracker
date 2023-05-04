@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/login" element={<Unauthguard>{<Login />}</Unauthguard>} />
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Authguard> {<Mainfinance />}</Authguard>} />
         <Route
           path="/addtransaction"
@@ -28,7 +28,7 @@ function App() {
           element={<Authguard>{<Edittransaction />} </Authguard>}
         />
 
-        <Route  path="/register" element={<Unauthguard>{ <Register />}</Unauthguard>} />
+        <Route  path="/register" element={ <Register />} />
       </Routes>
     </div>
   );
