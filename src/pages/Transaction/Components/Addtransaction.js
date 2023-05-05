@@ -1,12 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import "./addtransaction.css";
-import { useEffect } from "react";
+import { monthyearoptins } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
-import getBase64 from "get-base64";
+import { transactionTypeOptions } from "../../../utils/constant";
+import { accountOptions } from "../../../utils/constant";
+import { validation } from "./validation";
 const AddTransaction = () => {
   const navigate = useNavigate();
-  let id = 1;
   const [addtransaction, setAddtransaction] = useState({
     transactiondate: "",
     monthyear: "",
@@ -16,10 +17,10 @@ const AddTransaction = () => {
     amount: "",
     receipt: "",
     notes: "",
-  
-    
   });
-  console.log(addtransaction.id,"vivekkkkkk");
+
+  console.log(monthyearoptins, "monthyear");
+
   const backtransactionpage = () => {
     navigate("/");
   };
@@ -62,8 +63,6 @@ const AddTransaction = () => {
     // console.log(transactionvalue, "trans value");
   };
 
-
-
   const addtransactionsubmit = (event) => {
     event.preventDefault();
     const errors = validation(addtransaction);
@@ -73,14 +72,8 @@ const AddTransaction = () => {
     } else {
       setAddtransaction(addtransaction);
       var get = JSON.parse(localStorage.getItem("addtransaction") || "[]");
-      console.log(get, "loggg");
-      console.log(get.transactiondate,"log value of tra date ");
-      console.log(addtransaction, "second");
-      console.log();
-      var id =  get.length + 1;
-      console.log(id,"id")
-      addtransaction.id = id;  
-      console.log(id,"iddd");
+      var id = get.length + 1;
+      addtransaction.id = id;
       get.push(addtransaction);
 
       // localStorage.setItem('Transaction', JSON.stringify(get));
@@ -89,83 +82,23 @@ const AddTransaction = () => {
     }
   };
   const getBase64 = (file) => {
-    return new Promise((resolve,reject) => {
-       const reader = new FileReader();
-       reader.onload = () => resolve(reader.result);
-       reader.onerror = error => reject(error);
-       reader.readAsDataURL(file);
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
     });
-  } 
+  };
   const fileupload = (e) => {
     const file = e.target.files[0];
-    getBase64(file).then(base64 => {
-        const newobj = { ...addtransaction, receipt: base64 }
-        setAddtransaction(newobj)
-     console.log(base64,"base64");
-      console.debug("file stored",base64);
+    getBase64(file).then((base64) => {
+      const newobj = { ...addtransaction, receipt: base64 };
+      setAddtransaction(newobj);
+      console.debug("file stored", base64);
     });
-};
-
-  const validation = (addtransaction) => {
-    console.log(addtransaction,"vivekkkkkkkkkkkkkkkkkkkkkk");
-    const error = {};
-    // console.log(addtransaction.notes.length, "valueeeeee");
-    // console.log(addtransaction, "addtransaction values in validation");
-    // console.log(new Intl.NumberFormat("en-IN").format(addtransaction.amount));
-    const currentdate = new Date();
-
-    if (addtransaction.transactiondate === "") {
-      error.transactiondate = "Enter A Transaction Date";
-    } else if (addtransaction.transactiondate > currentdate.toISOString()) {
-      error.transactiondate = "Enter A Valid Transaction Date";
-    }
-
-    if (
-      addtransaction.monthyear === "" ||
-      addtransaction.monthyear === "Select Month Year"
-    ) {
-      error.monthyear = "Select Month Year";
-    }
-
-    if (
-      addtransaction.transactiontype === "" ||
-      addtransaction.transactiontype === "Select Transaction Type"
-    ) {
-      error.transactiontype = "Select Transaction Type";
-    }
-    if (
-      addtransaction.fromaccount === "" ||
-      addtransaction.fromaccount === "Select From Account"
-    ) {
-      error.fromaccount = "Select From Account";
-    }
-    if (
-      addtransaction.toaccount === "" ||
-      addtransaction.toaccount === "Select To Account"
-    ) {
-      error.toaccount = "Select To Account";
-    } else if (addtransaction.toaccount === addtransaction.fromaccount) {
-      error.toaccount = "Select To and From Diffrent Account";
-    }
-
-    if (addtransaction.amount <= 0) {
-      error.amount = "Enter Valid amount";
-    } 
-    if (addtransaction.receipt === "") {
-      error.receipt = "Upload Receipt";
-    }
-    //  else if (!addtransaction.receipt.match(/(\.jpg|\.jpeg|\.png|\.gif)$/i)
-    // ) {
-    //   error.receipt = "Upload Only jpg/jpeg/png/gif file";
-    // }
-    if (addtransaction.notes.trim() === "") {
-      error.notes = "Enter A Notes";
-    } else if (addtransaction.notes.length >= 251) {
-      error.notes = "Notes less Than 250 char";
-    }
-    return error;
   };
 
+  
   return (
     <div>
       <div className="mainclassaddtransaction">
@@ -181,7 +114,7 @@ const AddTransaction = () => {
                 </label>
               </div>
               <div>
-              <input type="hidden" id="custId" name="custId" value="3487"/>
+                <input type="hidden" id="custId" name="custId" value="3487" />
                 <input
                   className="allinputbox"
                   type="date"
@@ -204,19 +137,11 @@ const AddTransaction = () => {
                   name="monthyear"
                   onInput={handleInput}
                 >
-                  <option value="Select Month Year">Select Month Year</option>
-                  <option value="Jan 2023">Jan 2023</option>
-                  <option value="feb 2023">feb 2023</option>
-                  <option value="March 2023">March 2023</option>
-                  <option value="April 2023">April 2023</option>
-                  <option value="May 2023">May 2023</option>
-                  <option value="June 2023">June 2023</option>
-                  <option value="July 2023">July 2023</option>
-                  <option value="August 2023">August 2023</option>
-                  <option value="September 2023">September 2023</option>
-                  <option value="October 2023">October 2023</option>
-                  <option value="November 2023">November 2023</option>
-                  <option value="December 2023">December 20232</option>
+                  {monthyearoptins.map((data) => (
+                    <option key={data.label} value={data.value}>
+                      {data.label}
+                    </option>
+                  ))}
                 </select>
                 <div>
                   {error.monthyear && (
@@ -233,12 +158,11 @@ const AddTransaction = () => {
                   name="transactiontype"
                   onInput={handleInput}
                 >
-                  <option value="Select Transaction Type">
-                    Select Transaction Type
-                  </option>
-                  <option value="Home Expense">Home Expense</option>
-                  <option value="Personal Expense">Personal Expense</option>
-                  <option value="Income">Income</option>
+                  {transactionTypeOptions.map((data) => (
+                    <option key={data.label} value={data.value}>
+                      {data.label}
+                    </option>
+                  ))}
                 </select>
                 <div>
                   {error.transactiontype && (
@@ -255,15 +179,11 @@ const AddTransaction = () => {
                   name="fromaccount"
                   onInput={handleInput}
                 >
-                  <option value="Select From Account">
-                    Select From Account
-                  </option>
-                  <option value="Personal Acccount">Personal Acccount</option>
-                  <option value="Real Leaving ">Real Leaving </option>
-                  <option value="My Dream Home">My Dream Home</option>
-                  <option value="Full Circle">Full Circle</option>
-                  <option value="Core Realtors">Core Realtors</option>
-                  <option value="Big Block">Big Block</option>
+                  {accountOptions.map((data) => (
+                    <option key={data.label} value={data.value}>
+                      {data.label}
+                    </option>
+                       ))}
                 </select>
                 <div>
                   {error.fromaccount && (
@@ -280,13 +200,11 @@ const AddTransaction = () => {
                   name="toaccount"
                   onInput={handleInput}
                 >
-                  <option value="Select To Account">Select To Account</option>
-                  <option value="Personal Acccount">Personal Acccount</option>
-                  <option value="Real Leaving">Real Leaving</option>
-                  <option value="My Dream Home">My Dream Home</option>
-                  <option value="Full Circle">Full Circle</option>
-                  <option value="Core Realtors">Core Realtors</option>
-                  <option value="Big Block">Big Block</option>
+                  {accountOptions.map((data) => (
+                    <option key={data.label} value={data.value}>
+                      {data.label}
+                    </option>
+                       ))}
                 </select>
                 <div>
                   {error.toaccount && (
@@ -343,11 +261,10 @@ const AddTransaction = () => {
               </div>
               <div>
                 <input className="addtransactionback1" type="submit"></input>
-              
-                  <p className="addtransactionback" onClick={backtransactionpage}>
-                    Back
-                  </p>
-                
+
+                <p className="addtransactionback" onClick={backtransactionpage}>
+                  Back
+                </p>
               </div>
             </div>
           </form>

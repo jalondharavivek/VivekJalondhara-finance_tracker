@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./financemain.css";
-import { Link } from "react-router-dom";
 import Financetrackerform from "./Financemain";
-
+import { selectgroupby } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 const Mainfinance = () => {
   const [alltransaction, setAlltransaction] = useState([]);
@@ -24,14 +23,6 @@ const Mainfinance = () => {
     navigate("addtransaction");
   };
 
-  const selectgroupby = [
-    { value: "monthyear", label: "Month Year" },
-    { value: "transactiontype", label: "Transaction Type" },
-    { value: "fromaccount", label: "From Account" },
-    { value: "toaccount", label: "To Account" },
-    { value: "amount", label: "Amount" },
-    { value: "none", label: "none" },
-  ];
 
   function group(event) {
     const grouptype = event.target.value;

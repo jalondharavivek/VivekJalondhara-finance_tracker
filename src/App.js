@@ -1,5 +1,4 @@
 import "./App.css";
-import Financetrackerform from "./pages/Transaction/Components/Financemain";
 import AddTransaction from "./pages/Transaction/Components/Addtransaction";
 import Viewtransaction from "./pages/Transaction/Components/Viewtransaction";
 import Edittransaction from "./pages/Transaction/Components/edittransaction";

@@ -1,10 +1,10 @@
 import React from "react";
 import { Navigate,  } from "react-router-dom";
-import CryptoJS from "crypto-js";
 
-const Authguard = ({ children }) => {
+ const  Authguard = ({ children }) => {
 
   const authtoken = JSON.parse(localStorage.getItem("loggin"))
+
 //   const secretPass =
 //   "PassWord@#$%^&*()+_012364778//sgvfcaslcauscasncbfbasfqwLODFFFF[DNDDmnnfnsvbjuficflkcvsjkxvxvbxvbjkxvxvzxv";
 // const bytes = CryptoJS.AES.decrypt(authtoken, secretPass);
@@ -23,6 +23,7 @@ const Authguard = ({ children }) => {
   }
 
   // }, []);
-};
 
-export default Authguard;
+
+}
+export default Authguard

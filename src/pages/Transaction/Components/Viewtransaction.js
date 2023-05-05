@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React from "react";
 import "./views.css";
-import { navigate } from "react-router-dom";
 const Viewtransaction = (index) => {
   const navigate = useNavigate();
   const viewdata = useLocation(index);
@@ -57,7 +56,7 @@ const Viewtransaction = (index) => {
               <td>
                 {" "}
                 <label>Receipt :- </label>
-                <img src={viewdata.state.receipt} className="IMGWIDTH"></img>
+                <img src={viewdata.state.receipt} alt="" className="IMGWIDTH"></img>
               </td>
             </tr>
             <tr>
