@@ -1,34 +1,35 @@
+import logo from "./logo.svg";
 import "./App.css";
-import AddTransaction from "./pages/Transaction/Components/Addtransaction";
-import Viewtransaction from "./pages/Transaction/Components/Viewtransaction";
-import Edittransaction from "./pages/Transaction/Components/edittransaction";
-import Mainfinance from "./pages/Transaction/Components/Groupby";
-import { Route, Routes } from "react-router-dom";
-import Login from "./pages/Register/Components/Login";
-import Register from "./pages/Register/Components/Register";
-import Authguard from "./pages/Register/Components/authguard";
-import Unauthguard from "./pages/Register/Components/Unauthguard";
+import { Main } from "./Context/context-transaction";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Transactionadd from "./pages/Transaction/Components/Addtransaction";
+import Mainfinance from "./pages/Transaction/Components/MainTransaction";
+import Viewtransaction from "./pages/Transaction/Components/viewtra";
+import Edittransaction from "./pages/Transaction/Components/edit";
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Authguard> {<Mainfinance />}</Authguard>} />
-        <Route
-          path="/addtransaction"
-          element={<Authguard> {<AddTransaction />}</Authguard>}
-        />
-        <Route
-          path="/transaction/view/:index"
-          element={<Authguard> {<Viewtransaction />}</Authguard>}
-        />
-        <Route
-          path="/transaction/edit/:index"
-          element={<Authguard>{<Edittransaction />} </Authguard>}
-        />
+    <div>
+      <Main>
+        <BrowserRouter>
+          <Routes>
+            {/* <Route path="/register" element={<Register />} /> */}
 
-        <Route  path="/register" element={ <Register />} />
-      </Routes>
+            {/* <Route path="/" element={<Authenticationlogin />}> */}
+            <Route path="/" element={<Mainfinance />} />
+            {/* </Route>  */}
+
+            <Route path="/addtransaction" element={<Transactionadd />}></Route>
+            <Route   path="/transaction/view/:index" element={<Viewtransaction />}></Route>
+            <Route   path="/transaction/edit/:index" element={<Edittransaction />}></Route>
+
+            {/* <Route path="/alltransaction" element={<Alltransaction />} >
+          <Route path=":id" element={<Alltransaction />} />  */}
+            {/* </Route>
+          <Route path="/View" element={<View />} />
+        </Route> */}
+          </Routes>
+        </BrowserRouter>
+      </Main>
     </div>
   );
 }
