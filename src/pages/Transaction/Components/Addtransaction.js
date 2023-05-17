@@ -79,7 +79,7 @@ const Transactionadd = (props) => {
   console.log(editdata1[props.all.id],"vvvv1");
       console.log(editdata1[props.all.id - 1], "10101010");
 
-      const index = editdata1.findIndex((item) => item.id === props?.all?.id);
+      const index =  editdata1.findIndex((item) => item.id === props?.all?.id);
 
       editdata1[index] = { ...newdata, id: props?.all?.id };
       setDatastate(editdata1);

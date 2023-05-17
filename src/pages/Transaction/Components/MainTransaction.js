@@ -48,15 +48,15 @@ const Mainfinance = () => {
   }
 
 
-//   function deleterecord(delet_id) {
-//     console.log(delet_id,"delet_id");
-//     let deletedata = [...datastate];
+  function deleterecord(delet_id) {
+    console.log(delet_id,"delet_id");
+    let deletedata = [...datastate];
 
-//    let filterdata = deletedata.filter(item => item.id !== delet_id)
+   let filterdata = deletedata.filter(item => item.id !== delet_id)
 
-//    setDatastate(filterdata)
+   setDatastate(filterdata)
 
-// }
+}
 
 useEffect(() => {
   console.log(datastate,"dataaaaa");
@@ -107,13 +107,13 @@ useEffect(() => {
             {Object.values(groupby).map((element, index) => (
               <div key={index}>
                 <h1>{Object.keys(groupby)[index]}</h1>
-                <Financetrackerform all={element}  />
+                <Financetrackerform all={element} deleterecord={deleterecord} />
               </div>
             ))}
           </div>
         ) : (
           <div>
-            <Financetrackerform all={alltransaction} />
+            <Financetrackerform all={alltransaction} deleterecord={deleterecord}/>
           </div>
         )}
       </div>
