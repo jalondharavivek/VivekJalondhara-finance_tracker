@@ -1,21 +1,23 @@
-import React from "react";
+import React, { createContext, useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import CryptoJS from "crypto-js";
 import "./login.css";
 import { Navigate, useNavigate } from "react-router-dom";
-
+import Mainfinance from "../../Transaction/Components/Groupby";
+const loginemail = createContext()
+console.log(loginemail,"787878");
 const Login = () => {
   const navigate = useNavigate();
   const [login, setlogin] = useState([]);
   const [input, setinput] = useState({ email: "", password: "" });
   const [error, setErrors] = useState({});
   console.log(login, "viv");
-
+const inputelment = useRef("")
   useEffect(() => {
     setlogin(JSON.parse(localStorage.getItem("user") || "[]"));
   }, []);
- 
+
   const logindatafun = (event) => {
     const loginval = {
       ...input,
@@ -29,7 +31,7 @@ const Login = () => {
     const errors = validationlogin(input);
 
     if (Object.values(errors).length > 0) {
-      setErrors(validationlogin(input))
+      setErrors(validationlogin(input));
     } else {
       login.map((logcred) => {
         const secretPass =
@@ -39,36 +41,36 @@ const Login = () => {
         console.log(data, "vivek");
 
         if (input.email === logcred.email && input.password === data) {
-          console.log(logcred.id,"inputid");
-        
+          console.log(logcred.id, "inputid");
+
           //  const  data = logcred.id
           // console.log(data);
           // const logintoekn = CryptoJS.AES.encrypt(
           //   JSON.stringify(input.email),
           //   secretPass
           // ).toString();
+          
 
-           localStorage.setItem("loggin" || [], true);
+          localStorage.setItem("loggin" || [], true);
           navigate("/");
+         
         } else {
           const error = {};
-          error.password = "Enter Valid email and password "
-          setErrors(error)
+          error.password = "Enter Valid email and password ";
+          setErrors(error);
         }
-     
-       
       });
     }
   };
 
+
+
+  console.log(inputelment,"useref");
+  var emaill = input.email
   const validationlogin = (input) => {
-    console.log(input,  "4554545");
+    console.log(input, "4554545");
     const error = {};
-    if (
-      input.email === "" ||
-      input.password === "" 
-     
-    ) {
+    if (input.email === "" || input.password === "") {
       error.password = "Enter Email and passwords ";
     }
 
@@ -76,7 +78,13 @@ const Login = () => {
   };
 
   return (
+   
     <div>
+     <loginemail.Provider value={emaill}>
+
+     </loginemail.Provider>
+
+     
       <div className="loginmainclass">
         <div>
           <span className="loginheading">Login</span>
@@ -89,6 +97,7 @@ const Login = () => {
               </div>
               <div>
                 <input
+               ref={inputelment}
                   className="allinputbox"
                   type="Text"
                   placeholder="Email "
@@ -136,6 +145,8 @@ const Login = () => {
         </div>
       </div>
     </div>
+
   );
 };
 export default Login;
+export {loginemail};

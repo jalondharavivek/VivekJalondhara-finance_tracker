@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import AddTransaction from "./Addtransaction";
 const Financetrackerform = (prop) => {
+  console.log(prop);
   const [alltransaction, setAlltransaction] = useState([]);
   const [sortprevalue, setPrevalue] = useState("");
   const [order, setOrder] = useState(0);

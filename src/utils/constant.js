@@ -1,4 +1,4 @@
-export const monthyearoptins = [
+export const monthYearOptions = [
 
     { label: '-- select option --', value: '' },
     { label: 'Jan 2023', value: 'jan-2023' },

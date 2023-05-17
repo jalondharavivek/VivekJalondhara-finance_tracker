@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./financemain.css";
 import Financetrackerform from "./Financemain";
 import { selectgroupby } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +56,7 @@ const Mainfinance = () => {
           <div>
             <p className="addtransaction" onClick={addtransaction}>
               ADD +
-            </p>
+            </p>  
           </div>
         </div>
         <div className="grpby">
