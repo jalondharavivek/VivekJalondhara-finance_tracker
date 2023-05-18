@@ -275,10 +275,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 const today = new Date();
 
 let userSchema = yup.object().shape({
-  transactiondate: yup
-    .date()
-    .typeError("Transaction Date is Required")
-    .max(today, "Enter Valid Transaction Date"),
+  transactiondate: yup.string()
+  .required("Transaction Date is Required")
+  .max(today, "Enter Valid Transaction Date"),
   monthyear: yup.string().required("Month Year is Required"),
   transactiontype: yup.string().required("Transaction Type is Required"),
   fromaccount: yup.string().required("From Account  is Required"),
@@ -305,11 +304,24 @@ const Transactionadd = (props) => {
     reset,
   } = useForm({ resolver: yupResolver(userSchema) });
 
-  const onSubmitHandler = (data) => {
+  async function bs(file) {
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    await new Promise(resolve => reader.onload = () => resolve())
+    return reader.result
+}
+  const onSubmitHandler = async(data) => {
     console.log(data.receipt,"jjdjd");
+    if (typeof (data.receipt) !== "string") {
+      let url = await bs(data.receipt[0])
 
-
+data.receipt = url;
+  }
     if (props?.all?.id) {
+
+
+
+
       var editdata1 = JSON.parse(
         localStorage.getItem("addtransaction") || "[]"
       );
