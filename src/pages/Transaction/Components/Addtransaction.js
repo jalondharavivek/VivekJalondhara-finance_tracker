@@ -36,11 +36,9 @@ let userSchema = yup.object().shape({
     if (typeof value ==="string") {
       return true;
     }else{
-      console.log("sanjjjjjjjjjjjj");
       return value[0] && (value[0].type === "image/jpg" || value[0].type === "image/jpeg" || value[0].type === "image/png");
     }
   }).test("fileSize", "The file is too large", (value) => {
-    console.log(typeof value,"jjjj");
     if (typeof value ==="string") {
       return true;
     }else{
