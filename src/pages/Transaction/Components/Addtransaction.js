@@ -280,7 +280,7 @@ let userSchema = yup.object().shape({
   .max(today, "Enter Valid Transaction Date"),
   monthyear: yup.string().required("Month Year is Required"),
   transactiontype: yup.string().required("Transaction Type is Required"),
-  fromaccount: yup.string().required("From Account  is Required"),
+  fromaccount: yup.string().required("From Account  is Required").notOneOf([yup.ref("fromaccount")],"select diffrent to and from account") ,
   toaccount: yup.string().required("To Account  is Required"),
   amount: yup.string().required("Amount  is Required"),
   notes: yup
@@ -289,7 +289,26 @@ let userSchema = yup.object().shape({
     .required("Notes is a required field")
     .min(2, "Notes Min 2 character"),
 
-    receipt: yup.mixed().required("filee")
+    receipt:yup.mixed().test("required", "You need to provide a file", (value) => {
+      if (value.length > 0) {  
+        return true;
+      }
+      return false;
+
+    }).test("type", "We only support jpeg and jpg format", function (value) {
+      if (typeof value ==="string") {
+        return true;
+      }else{
+        
+        return value[0] && (value[0].type === "image/jpg" || value[0].type === "image/jpeg" || value[0].type === "image/png");
+      }
+    }).test("fileSize", "The file is too large", (value) => {
+      if (typeof value ==="string") {
+        return true;
+      }else{
+        return value[0] && value[0].size <= 2000000;
+      }
+    }),
 
 });
 
