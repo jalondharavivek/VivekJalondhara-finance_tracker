@@ -18,15 +18,35 @@ import { useNavigate } from "react-router-dom";
 const today = new Date();
 
 let userSchema = yup.object().shape({
-  transactiondate: yup
-    .date()
-    .typeError("Transaction Date is Required")
-    .max(today, "Enter Valid Transaction Date"),
+  transactiondate: yup.string()
+  .required("Transaction Date is Required")
+  .max(today, "Enter Valid Transaction Date"),
   monthyear: yup.string().required("Month Year is Required"),
   transactiontype: yup.string().required("Transaction Type is Required"),
   fromaccount: yup.string().required("From Account  is Required"),
-  toaccount: yup.string().required("To Account  is Required"),
+  toaccount: yup.string().required("To Account  is Required").notOneOf([yup.ref("fromaccount")],"Select Diffrenet account to and from") ,
   amount: yup.string().required("Amount  is Required"),
+  receipt:yup.mixed().test("required", "You need to provide a file", (value) => {
+    if (value.length > 0) {  
+      return true;
+    }
+    return false;
+
+  }).test("type", "We only support jpeg and jpg format", function (value) {
+    if (typeof value ==="string") {
+      return true;
+    }else{
+      console.log("sanjjjjjjjjjjjj");
+      return value[0] && (value[0].type === "image/jpg" || value[0].type === "image/jpeg" || value[0].type === "image/png");
+    }
+  }).test("fileSize", "The file is too large", (value) => {
+    console.log(typeof value,"jjjj");
+    if (typeof value ==="string") {
+      return true;
+    }else{
+      return value[0] && value[0].size <= 2000000;
+    }
+  }),
   notes: yup
     .string("notwes should be a string")
     .trim()
@@ -34,7 +54,12 @@ let userSchema = yup.object().shape({
     .min(2, "Notes Min 2 character"),
   // createdOn: date().default(() => new Date()),
 });
-
+async function bs(file) {
+  let reader = new FileReader()
+  reader.readAsDataURL(file)
+  await new Promise(resolve => reader.onload = () => resolve())
+  return reader.result
+}
 const Transactionadd = (props) => {
   const navigate = useNavigate();
 
@@ -59,21 +84,17 @@ const Transactionadd = (props) => {
     reset,
   } = useForm({ resolver: yupResolver(userSchema) });
 
-  const onSubmitHandler = (data) => {
+  const onSubmitHandler = async(data) => {
    
-    
+    if (typeof (data.receipt) !== "string") {
+      let url = await bs(data.receipt[0])
+
+data.receipt = url;
+  }
  
 
     if (props?.all?.id) {
-      const newdata = {
-        transactiondate: data.transactiondate.toLocaleDateString(),
-        monthyear: data.monthyear,
-        transactiontype: data.transactiontype,
-        fromaccount: data.fromaccount,
-        toaccount: data.toaccount,
-        amount: data.amount,
-        notes: data.notes,
-      };
+     
       var editdata1 = datastate;
   console.log(editdata1,"vvv");
   console.log(editdata1[props.all.id],"vvvv1");
@@ -81,7 +102,7 @@ const Transactionadd = (props) => {
 
       const index =  editdata1.findIndex((item) => item.id === props?.all?.id);
 
-      editdata1[index] = { ...newdata, id: props?.all?.id };
+      editdata1[index] = { ...data, id: props?.all?.id };
       setDatastate(editdata1);
     } else {
       // var get = JSON.parse(localStorage.getItem("addtransaction") || "[]");
@@ -92,20 +113,11 @@ const Transactionadd = (props) => {
       // localStorage.setItem("addtransaction", JSON.stringify(get));
       // // navigate("/");
       // reset();
-      const newdata = {
-        transactiondate: data.transactiondate.toLocaleDateString(),
-        monthyear: data.monthyear,
-        transactiontype: data.transactiontype,
-        fromaccount: data.fromaccount,
-        toaccount: data.toaccount,
-        amount: data.amount,
-        notes: data.notes,
-      };
-   
+     
       // var get = JSON.parse(localStorage.getItem("addtransaction") || "[]");
       var id = datastate.length + 1;
-      newdata.id = id;
-      setDatastate([...datastate, newdata]);
+      data.id = id;
+      setDatastate([...datastate, data]);
       // addtransaction.push(addtransaction);
       console.log(datastate, "loggggg");
       // localStorage.setItem('Transaction', JSON.stringify(get));
@@ -244,11 +256,11 @@ console.log(props?.all?.monthyear,"1010");
                   <label>Receipt :-</label>
                 </div>
                 <div>
-                  {/* <input
+                  <input
                     className="allinputbox"
                     type="file"
                     {...register("receipt", { required: true })}
-                  ></input> */}
+                  ></input>
                   <div className="errordiv">
                     {errors.receipt && <p> Receipt is required*.</p>}
                   </div>
