@@ -23,10 +23,9 @@ let userSchema = yup.object().shape({
   monthyear: yup.string().required("Month Year is Required"),
   transactiontype: yup.string().required("Transaction Type is Required"),
   fromaccount: yup.string().required("From Account  is Required"),
-  toaccount: yup.string().required("To Account  is Required"),
+  toaccount: yup.string().required("To Account  is Required").notOneOf([yup.ref("fromaccount")],"From and to must not be same"),
   amount: yup.string().required("Amount  is Required"),
   receipt:yup.mixed().test("required", "You need to provide a file", (value) => {
-    // return file && file.size <-- u can use this if you don't want to allow empty files to be uploaded;
     if (value.length > 0) {  
       return true;
     }
@@ -36,11 +35,9 @@ let userSchema = yup.object().shape({
     if (typeof value ==="string") {
       return true;
     }else{
-      console.log("sanjjjjjjjjjjjj");
       return value[0] && (value[0].type === "image/jpg" || value[0].type === "image/jpeg" || value[0].type === "image/png");
     }
   }).test("fileSize", "The file is too large", (value) => {
-    console.log(typeof value,"jjjj");
     if (typeof value ==="string") {
       return true;
     }else{
