@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { selectgroupby } from "../../../utills/constants";
 const Mainfinance = () => {
   const transactionalldata = useSelector((state) => state.transactions );
-  console.log(transactionalldata,"traaaaa");
+  console.log(transactionalldata.receipt,"traaaaa");
   const dispatch = useDispatch();
   const [alltransaction, setAlltransaction] = useState([]);
   const [groupby, setGroupby] = useState([]);

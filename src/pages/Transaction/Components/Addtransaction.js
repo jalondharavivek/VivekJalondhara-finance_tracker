@@ -71,19 +71,22 @@ const Transactionadd = (props) => {
     
   } = useForm({ resolver: yupResolver(userSchema) });
   async function bs(file) {
+    console.log(file,"image1");
     let reader = new FileReader()
     reader.readAsDataURL(file)
     await new Promise(resolve => reader.onload = () => resolve())
     return reader.result
 }
   const onSubmitHandler = async(data) => {
+
+    console.log(data.receipt,"imagwe");
     if (typeof (data.receipt) !== "string") {
       let url = await bs(data.receipt[0])
 
 data.receipt = url;
 console.log(url,"url");
     }
-    console.log(data.transactiondate,"0000vivek");
+    console.log(data.receipt,"0000vivek");
     if (props?.all?.id) {
       // const newdata = {
       //    transactiondate: data.transactiondate,
@@ -104,24 +107,17 @@ console.log(url,"url");
       
       
       //  const index = editdata1.findIndex((item) => item.id === props?.all?.id);
-
+console.log(editdata1,"dataimage");
        editdata1  = { ...data, id: props?.all?.id };
        console.log(editdata1,"vivekkkkkk01..");
       dispatch(edittransactiondata({id:props?.all?.id,data:editdata1}))
       // dispatch(edittransactiondata(editdata1));
       navigate("/");
     } else {
-      const newdata1 = {
-        transactiondate: data.transactiondate,
-        monthyear: data.monthyear,
-        transactiontype: data.transactiontype,
-        fromaccount: data.fromaccount,
-        toaccount: data.toaccount,
-        amount: data.amount,
-        notes: data.notes,
-      };
-      let dataa = { ...newdata1};
-console.log(dataa,"datttttta");
+     
+      let dataa = { ...data};
+      console.log(editdata1,"dataa");
+console.log(dataa.receipt,"datttttta");
       const tralength = transactiondata.reduce((ADDTRA) => ADDTRA + 1, 0);
       const idtransaction = transactiondata[tralength - 1].id;
       dataa.id = idtransaction + 1;
@@ -264,8 +260,14 @@ console.log(dataa,"datttttta");
                   <input
                     className="allinputbox"
                     type="file"
-                    {...register("receipt", { required: true })}
+                   setValue = { <img
+                    src={props?.all?.receipt}
+                    alt="preview"
+                    className="h-64 w-full object-contain"
+                  />}
+                    {...register("receipt",{ required: true }  ) }
                   ></input>
+                 
                   <div className="errordiv">
                     {errors.receipt && <p> Receipt is required*.</p>}
                   </div>
