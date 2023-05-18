@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import { Formdata } from "../../../Context/context-transaction";
-import { useContext } from "react";
 
 // import AddTransaction from "./Addtransaction";
 const Financetrackerform = (prop) => {
@@ -21,7 +20,6 @@ const Financetrackerform = (prop) => {
   const recordsPerPage = 3;
   const [records, setRecords] = useState([]);
   const [page, setPage] = useState(0);
-  const { datastate, setDatastate } = useContext(Formdata);
 
   useEffect(() => {
     const lastindex = currentPage * recordsPerPage;
@@ -86,21 +84,10 @@ const Financetrackerform = (prop) => {
   
 
   useEffect(() => {
-    if (delet !== 0) {
-      console.log(delet, "");
-      setDatastate(datastate)
-      console.log(datastate,"viverk");
-      // setAlltransaction(datastate);
 
-      // setAlltransaction(prop.all);
-
-      setDelet(0);
-      console.log(delet, "logdelt");
-      console.log(datastate, "log0");
-    } else {
       setAlltransaction(prop.all);
-    }
-  }, [prop, datastate]);
+    
+  }, [prop ]);
 
   //   // for (let key of Object.keys(sorted)) {
   //   //   return [key, sorted[key]];
@@ -181,16 +168,16 @@ const Financetrackerform = (prop) => {
       i,
     });
   };
-  function deleterecord(delet_id) {
-    setDelet(delet_id);
-    console.log(delet_id, "delet_id");
-    let deletedata = [...prop.all];
-    console.log(deletedata, "prop");
-    let filterdata = deletedata.filter((item) => item.id !== delet_id);
+  // function deleterecord(delet_id) {
+  //   setDelet(delet_id);
+  //   console.log(delet_id, "delet_id");
+  //   let deletedata = [...prop.all];
+  //   console.log(deletedata, "prop");
+  //   let filterdata = deletedata.filter((item) => item.id !== delet_id);
 
-    console.log(filterdata, "vv");
-    setDatastate(filterdata);                                                                                                                                                                                                                                                                               
-  }
+  //   console.log(filterdata, "vv");
+  //   setDatastate(filterdata);                                                                                                                                                                                                                                                                               
+  // }
   return (
     <div className="maindisplay">
       <div className="addandgroupby">
@@ -258,14 +245,14 @@ const Financetrackerform = (prop) => {
                   <i className="arrow down"></i>
                 )}
               </th>
-              {/* <th onClick={() => shortfun("receipt")}>
+              <th onClick={() => shortfun("receipt")}>
                 Receipt{" "}
                 {order === "ASC" ? (
                   <i className="arrow up"></i>
                 ) : (
                   <i className="arrow down"></i>
                 )}
-              </th> */}
+              </th>
               <th onClick={() => shortfun("notes")}>
                 Notes{" "}
                 {order === "ASC" ? (
@@ -290,9 +277,9 @@ const Financetrackerform = (prop) => {
                   ₹{" "}
                   {new Intl.NumberFormat("en-IN").format(addtransaction.amount)}
                 </td>
-                {/* <td>
+                <td>
                   <img src={addtransaction.receipt} className="imgwidth" />
-                </td> */}
+                </td>
                 <td>{addtransaction.notes}</td>
                 <td>
                   {" "}
@@ -314,7 +301,7 @@ const Financetrackerform = (prop) => {
                   </p>
                   <p
                     className="actionbutton"
-                    onClick={() => deleterecord(addtransaction.id)}
+                   
                   >
                     Delete
                   </p>

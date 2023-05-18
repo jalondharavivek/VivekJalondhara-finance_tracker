@@ -2,24 +2,22 @@ import React, { useState, useEffect } from "react";
 
 import Financetrackerform from "./Transactiongrid";
 // import "../../../assets/style/Finance.css                                                                                                                                                                                     ";
-
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Formdata } from "../../../Context/context-transaction";
-import { useContext } from "react";
-import {
-  selectgroupby
-  } from "../../../utills/constants";
-const Mainfinance = () => {
-  const { datastate, setDatastate } = useContext(Formdata);
 
+import { selectgroupby } from "../../../utills/constants";
+const Mainfinance = () => {
+  const transactionalldata = useSelector((state) => state.transactions );
+  console.log(transactionalldata,"traaaaa");
+  const dispatch = useDispatch();
   const [alltransaction, setAlltransaction] = useState([]);
   const [groupby, setGroupby] = useState([]);
   const [grp, setGrp] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
-    setAlltransaction(datastate);
-  }, []);
+    setAlltransaction(transactionalldata);
+  }, [transactionalldata]);
 
   const logout = () => {
     localStorage.removeItem("loggin");
@@ -47,21 +45,20 @@ const Mainfinance = () => {
     setGrp(true);
   }
 
+  //   function deleterecord(delet_id) {
+  //     console.log(delet_id,"delet_id");
+  //     let deletedata = [...datastate];
 
-//   function deleterecord(delet_id) {
-//     console.log(delet_id,"delet_id");
-//     let deletedata = [...datastate];
+  //    let filterdata = deletedata.filter(item => item.id !== delet_id)
 
-//    let filterdata = deletedata.filter(item => item.id !== delet_id)
+  //    setDatastate(filterdata)
 
-//    setDatastate(filterdata)
+  // }
 
-// }
+  // useEffect(() => {
 
-useEffect(() => {
-  console.log(datastate,"dataaaaa");
-  setAlltransaction(datastate);
-}, [datastate]);
+  //   setAlltransaction(datastate);
+  // }, [datastate]);
   return (
     <div>
       <div className="financetrackerheading">
@@ -107,7 +104,7 @@ useEffect(() => {
             {Object.values(groupby).map((element, index) => (
               <div key={index}>
                 <h1>{Object.keys(groupby)[index]}</h1>
-                <Financetrackerform all={element}  />
+                <Financetrackerform all={element} />
               </div>
             ))}
           </div>

@@ -9,7 +9,7 @@ import Edittransaction from "./pages/Transaction/Components/edit";
 function App() {
   return (
     <div>
-      <Main>
+    
         <BrowserRouter>
           <Routes>
             {/* <Route path="/register" element={<Register />} /> */}
@@ -29,7 +29,7 @@ function App() {
         </Route> */}
           </Routes>
         </BrowserRouter>
-      </Main>
+    
     </div>
   );
 }
