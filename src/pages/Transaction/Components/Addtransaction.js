@@ -23,7 +23,7 @@ let userSchema = yup.object().shape({
   monthyear: yup.string().required("Month Year is Required"),
   transactiontype: yup.string().required("Transaction Type is Required"),
   fromaccount: yup.string().required("From Account  is Required"),
-  toaccount: yup.string().required("To Account  is Required").notOneOf([yup.ref("fromaccount")],"From and to must not be same"),
+  toaccount: yup.string().required("To Account  is Required"),
   amount: yup.string().required("Amount  is Required"),
   receipt:yup.mixed().test("required", "You need to provide a file", (value) => {
     if (value.length > 0) {  

@@ -4,7 +4,6 @@ import "../../../assets/style/Finance.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-import { Formdata } from "../../../Context/context-transaction";
 
 // import AddTransaction from "./Addtransaction";
 const Financetrackerform = (prop) => {

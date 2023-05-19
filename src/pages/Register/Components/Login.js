@@ -4,76 +4,85 @@ import { useEffect } from "react";
 import CryptoJS from "crypto-js";
 import "./login.css";
 import { Navigate, useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { useSelector } from "react-redux";
+import { useCookies } from 'react-cookie';
+  var Cookies = require("js-cookie")
 
 const Login = () => {
   const navigate = useNavigate();
-  const [login, setlogin] = useState([]);
-  const [input, setinput] = useState({ email: "", password: "" });
-  const [error, setErrors] = useState({});
-  console.log(login, "viv");
+  const [cookies, setCookie] = useCookies(['Token']);
 
-  useEffect(() => {
-    setlogin(JSON.parse(localStorage.getItem("user") || "[]"));
-  }, []);
- 
-  const logindatafun = (event) => {
-    const loginval = {
-      ...input,
-      [event.target.name]: event.target.value,
-    };
-    console.log(loginval, "7878");
-    setinput(loginval);
-  };
-  const loginsubmit = (event) => {
-    event.preventDefault();
-    const errors = validationlogin(input);
 
-    if (Object.values(errors).length > 0) {
-      setErrors(validationlogin(input))
-    } else {
-      login.map((logcred) => {
-        const secretPass =
-          "PassWord@#$%^&*()+_012364778//sgvfcaslcauscasncbfbasfqwLODFFFF[DNDDmnnfnsvbjuficflkcvsjkxvxvbxvbjkxvxvzxv";
-        const bytes = CryptoJS.AES.decrypt(logcred.password, secretPass);
-        const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-        console.log(data, "vivek");
+  const registeralldata = useSelector((state)=> state.users)
 
-        if (input.email === logcred.email && input.password === data) {
-          console.log(logcred.id,"inputid");
-        
-          //  const  data = logcred.id
-          // console.log(data);
-          // const logintoekn = CryptoJS.AES.encrypt(
-          //   JSON.stringify(input.email),
-          //   secretPass
-          // ).toString();
+  let userSchema = yup.object().shape({
+   
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("This is not a valid email").test("emailwrong", "Enter Valid Email", function (value) {
+        var registerdata = registeralldata;
 
-           localStorage.setItem("loggin" || [], true);
-          navigate("/");
-        } else {
-          const error = {};
-          error.password = "Enter Valid email and password "
-          setErrors(error)
+        function already(rdata) {
+          console.log(rdata);
+          return rdata.email === value;
         }
+        const compare = registerdata.find(already);
+        console.log(compare, "compare");
+        if (compare === undefined) {
+          return false;
+        } else {
+          return true;
+        }
+      }),
      
-       
-      });
-    }
-  };
+    password: yup
+      .string()
+      .required("Password is required") .test("emailwrong", "Enter Valid Password", function (value) {
+        var registerdata = registeralldata;
 
-  const validationlogin = (input) => {
-    console.log(input,  "4554545");
-    const error = {};
-    if (
-      input.email === "" ||
-      input.password === "" 
+        function already(rdata) {
+          console.log(rdata);
+          return rdata.password === value;
+        }
+        const compare = registerdata.find(already);
      
-    ) {
-      error.password = "Enter Email and passwords ";
-    }
+        if (compare === undefined) {
+          return false;
+        } else {
+          return true;
+        }
+      }),
+     
+      
+  });
+  
+  const loginsubmit = (data) => {
 
-    return error;
-  };
+    const string = Math.random().toString(36).substr(2,60)
+    console.log(string,"str");
+    Cookies.set('Token', string, { expires: 7 })
+
+
+    // const Token =string
+    // document.cookie=`Token= ${Token};max-age=`+60;
+    navigate("/")
+    }
+  
+
+
+
+ 
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({ resolver: yupResolver(userSchema) });
 
   return (
     <div>
@@ -82,7 +91,7 @@ const Login = () => {
           <span className="loginheading">Login</span>
         </div>
         <div className="formmain">
-          <form onSubmit={(e) => loginsubmit(e)}>
+          <form onSubmit={handleSubmit(loginsubmit)}>
             <div className="transactiondateclass">
               <div className="transactiondateclass">
                 <label className="allinpulfieldlabel">Email : </label>
@@ -92,15 +101,13 @@ const Login = () => {
                   className="allinputbox"
                   type="Text"
                   placeholder="Email "
-                  name="email"
-                  value={input.email}
-                  onInput={(e) => logindatafun(e)}
+                  {...register("email", { required: true })}
                 ></input>
-                {/* <div>
-                  {error.transactiondate && (
-                    <p className="valicolor">{error.transactiondate}</p>
-                  )}
-                </div> */}
+                <div className="errorcolor">
+                {errors.email && (
+                      <p>{errors.email.message} </p>
+                    )}
+                </div>
               </div>
             </div>
 
@@ -113,14 +120,15 @@ const Login = () => {
                   className="allinputbox"
                   type="Password"
                   placeholder="password "
-                  name="password"
-                  value={input.password}
-                  onChange={(e) => logindatafun(e)}
+                  
+                  {...register("password", { required: true })}
+
+                
                 ></input>
-                <div>
-                  {error.password && (
-                    <p className="valicolor">{error.password}</p>
-                  )}
+                <div className="errorcolor">
+                {errors.password && (
+                      <p>{errors.password.message} </p>
+                    )}
                 </div>
               </div>
             </div>

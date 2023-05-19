@@ -34,3 +34,6 @@ border-radius: 10px;
     display: flex;
     margin-top: 10px;
 }
+.errorcolor{
+    color: red;
+}

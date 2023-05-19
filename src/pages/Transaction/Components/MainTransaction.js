@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 import Financetrackerform from "./Transactiongrid";
 // import "../../../assets/style/Finance.css                                                                                                                                                                                     ";
@@ -7,12 +8,14 @@ import { useNavigate } from "react-router-dom";
 
 import { selectgroupby } from "../../../utills/constants";
 const Mainfinance = () => {
-  const transactionalldata = useSelector((state) => state.transactions );
-  console.log(transactionalldata.receipt,"traaaaa");
+  const transactionalldata = useSelector((state) => state.transactions);
+  console.log(transactionalldata.receipt, "traaaaa");
   const dispatch = useDispatch();
   const [alltransaction, setAlltransaction] = useState([]);
   const [groupby, setGroupby] = useState([]);
   const [grp, setGrp] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["Token"]);
+  var Cookies = require("js-cookie");
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -20,8 +23,9 @@ const Mainfinance = () => {
   }, [transactionalldata]);
 
   const logout = () => {
-    localStorage.removeItem("loggin");
-    navigate("login");
+    Cookies.remove("Token");
+
+    navigate("/login");
   };
   const addtransaction = () => {
     navigate("addtransaction");

@@ -3,103 +3,71 @@ import { useState } from "react";
 import CryptoJS from "crypto-js";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { newuser } from "../../../store/slices/User";
+import { useDispatch, useSelector } from "react-redux";
+
+
 const Register = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    nameregister: "",
-    email: "",
-    password: "",
+  const dispatch = useDispatch();
+
+  const registerdata = useSelector((state) => state.users);
+  let userSchema = yup.object().shape({
+    name: yup.string().required("Name is required"),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Enter a valid email")
+      .test(
+        "all ready registered","This Email is Already extis",
+        function (value) {
+          var registerdata0 = registerdata;
+          console.log();
+          function already(rdata) {
+            {
+              console.log(rdata, "dataa");
+            }
+            return rdata.email === value;
+          }
+          const compare = registerdata0.find(already);
+          if (compare === undefined) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      ),
+    password: yup
+      .string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters.")
+      .max(25, "Password must be a maximum limit of 25 characters."),
+    confirmpassword: yup
+      .string()
+      .required("Confirm Password is Required")
+      .oneOf([yup.ref("password"), null], "Password not match"),
   });
-  const [login, setlogin] = useState([]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({ resolver: yupResolver(userSchema) });
 
+  const registeruser = (data) => {
+    let dataa = { ...data };
 
-
-  useEffect(() => {
-    setlogin(JSON.parse(localStorage.getItem("user") || "[]"));
-  }, []);
-
-  const [error, setErrors] = useState({});
-  console.log(user, "userdata");
-  const handleInput = (event) => {
-    const registervalue = {
-      ...user,
-      [event.target.name]: event.target.value,
-    };
-    
- 
-
-    const secretPass =
-      "PassWord@#$%^&*()+_012364778//sgvfcaslcauscasncbfbasfqwLODFFFF[DNDDmnnfnsvbjuficflkcvsjkxvxvbxvbjkxvxvzxv";
-
-    const encpassword = CryptoJS.AES.encrypt(
-      JSON.stringify(registervalue.password),
-      secretPass
-    ).toString();
-    console.log(encpassword, "password");
-    const userdatastore = {
-      password: encpassword,
-      email: registervalue.email,
-      nameregister: registervalue.nameregister,
-    };
-    setUser(userdatastore);
-    // console.log(setAddtransaction(transactionvalue), "transaction values");
-    // console.log(transactionvalue, "trans value");
+    console.log(dataa.receipt, "datttttta");
+    const tralength = registerdata.reduce((ADDTRA) => ADDTRA + 1, 0);
+    const idtransaction = registerdata[tralength - 1].id;
+    dataa.id = idtransaction + 1;
+    console.log(dataa, "1datttaaa");
+    dispatch(newuser(dataa));
+    // navigate("/login");
   };
-
-  //   const encryptData = () => {
-  //     const data = CryptoJS.AES.encrypt(
-  //       JSON.stringify(text),
-  //       secretPass
-  //     ).toString();
-
-  //     setEncrptedData(data);
-  //   };
-
-  const registerusersubmit = (event) => {
-    console.log(event, "register");
-    event.preventDefault();
-    const errors = validationregister(user);
-    console.log(errors,"?/???");
-    if(Object.values(errors).length>0){
-      setErrors(validationregister(user))
-    }else{
-    setUser(user);
-    var get = JSON.parse(localStorage.getItem("user") || "[]");
-
-    var id = get.length + 1;
-
-    user.id = id;
-    console.log(id, "iddd");
-    get.push(user);
-
-    // localStorage.setItem('Transaction', JSON.stringify(get));
-    localStorage.setItem("user", JSON.stringify(get));
-    navigate("/login");
-    }
-  };
-
-const validationregister = (user) =>{
-  const error = {};
-
-if (user.nameregister === "") {  
-  error.nameregister = "Required Name";
-} 
-login.map((storagedata)=>{
-if (user.email=== "") {
-  error.email = "Required Email";
-}else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(user.email)){
-  error.email = "Enter Valid Email";
-} else if(user.email === storagedata.email){
-  error.email = "Enter Diff Email"
-  }
-  })
-if(user.password ===""){
-  error.password = "Enter Password"
-}
-
-return error;
-}
-
 
   return (
     <div>
@@ -108,7 +76,7 @@ return error;
           <span className="loginheading">Register</span>
         </div>
         <div className="formmain">
-          <form onSubmit={(e) => registerusersubmit(e)}>
+          <form onSubmit={handleSubmit(registeruser)}>
             <div className="transactiondateclass">
               <div className="transactiondateclass">
                 <label className="allinpulfieldlabel">Name : </label>
@@ -118,14 +86,11 @@ return error;
                   className="allinputbox"
                   type="Text"
                   placeholder="Name "
-                  name="nameregister"
-                  onInput={handleInput}
+                  {...register("name", { required: true })}
                 ></input>
-                <div>
-                    {error.nameregister && (
-                      <p className="valicolor">{error.nameregister}</p>
-                    )}
-                  </div>
+                <div className="errorcolor">
+                  {errors.name && <p>{errors.name.message} </p>}
+                </div>
               </div>
             </div>
             <div className="transactiondateclass">
@@ -137,14 +102,11 @@ return error;
                   className="allinputbox"
                   type="Text"
                   placeholder="Email "
-                  name="email"
-                  onInput={handleInput}
+                  {...register("email", { required: true })}
                 ></input>
-                <div>
-                    {error.email && (
-                      <p className="valicolor">{error.email}</p>
-                    )}
-                  </div>
+                <div className="errorcolor">
+                  {errors.email && <p>{errors.email.message} </p>}
+                </div>
               </div>
             </div>
 
@@ -157,14 +119,32 @@ return error;
                   className="allinputbox"
                   type="Password"
                   placeholder="password "
-                  name="password"
-                  onInput={handleInput}
+                  {...register("password", { required: true })}
                 ></input>
-                <div>
-                    {error.password && (
-                      <p className="valicolor">{error.password}</p>
-                    )}
-                  </div>
+                <div className="errorcolor">
+                  {errors.password && <p>{errors.password.message} </p>}
+                </div>
+              </div>
+            </div>
+
+            <div className="transactiondateclass">
+              <div className="passwordpadding">
+                <label className="allinpulfieldlabel">
+                  Confirm Password :{" "}
+                </label>
+              </div>
+              <div>
+                <input
+                  className="allinputbox"
+                  type="Password"
+                  placeholder="Confirm password "
+                  {...register("confirmpassword", { required: true })}
+                ></input>
+                <div className="errorcolor">
+                  {errors.confirmpassword && (
+                    <p>{errors.confirmpassword.message} </p>
+                  )}
+                </div>
               </div>
             </div>
             <div className="loginsubmit">
