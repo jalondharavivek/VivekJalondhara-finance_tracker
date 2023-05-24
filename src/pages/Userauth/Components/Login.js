@@ -3,21 +3,25 @@ import { useState } from "react";
 import { useEffect } from "react";
 import CryptoJS from "crypto-js";
 import "./login.css";
+import { usecokkie } from "../../../store/slices/cookies";
+import { useDispatch } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { useCookies } from 'react-cookie';
-  var Cookies = require("js-cookie")
+  var Cookies = require("js-cookie");
 
 const Login = () => {
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies(['Token']);
+  const dispatch = useDispatch();
 
 
   const registeralldata = useSelector((state)=> state.users)
-
+  console.log(registeralldata,"1202022");
+ 
   let userSchema = yup.object().shape({
    
     email: yup
@@ -64,9 +68,9 @@ const Login = () => {
 
     const string = Math.random().toString(36).substr(2,60)
     console.log(string,"str");
-    Cookies.set('Token', string, { expires: 7 })
-
-
+    Cookies.set('Token' ,string, { expires: 7 },{ secure: true }, )
+    dispatch(usecokkie(string))
+ 
     // const Token =string
     // document.cookie=`Token= ${Token};max-age=`+60;
     navigate("/")

@@ -5,8 +5,8 @@ import Transactionadd from "./pages/Transaction/Components/Addtransaction";
 import Mainfinance from "./pages/Transaction/Components/MainTransaction";
 import Viewtransaction from "./pages/Transaction/Components/viewtra";
 import Edittransaction from "./pages/Transaction/Components/edit";
-import Login from "./pages/Register/Components/Login";
-import Register from "./pages/Register/Components/Register";
+import Login from "./pages/Userauth/Components/Login";
+import Register from "./pages/Userauth/Components/Register";
 import Authguard from "./pages/authguard";
 import { ErrorBoundary } from "react-error-boundary";
 function App() {

@@ -1,8 +1,9 @@
 import React from "react";
 import { Navigate,  } from "react-router-dom";
-
+import { useSelector } from "react-redux";
  const  Authguard = (props) => {
-
+  const registeralldata = useSelector((state)=> state.usecdata)
+console.log(registeralldata,"log");
   const authtoken = JSON.parse(localStorage.getItem("loggin"))
 
 //   const secretPass =

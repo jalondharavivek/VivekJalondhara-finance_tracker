@@ -5,7 +5,7 @@ import Financetrackerform from "./Transactiongrid";
 // import "../../../assets/style/Finance.css                                                                                                                                                                                     ";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { deletetransactiondata } from "../../../store/slices/Tradet";
 import { selectgroupby } from "../../../utills/constants";
 const Mainfinance = () => {
   const transactionalldata = useSelector((state) => state.transactions);
@@ -48,16 +48,17 @@ const Mainfinance = () => {
     setGroupby(personGroupedByColor);
     setGrp(true);
   }
+  const transactiondata = useSelector((state) => state.transactions);
 
-  //   function deleterecord(delet_id) {
-  //     console.log(delet_id,"delet_id");
-  //     let deletedata = [...datastate];
+    function deleterecord(delet_id) {
+      console.log(delet_id,"delet_id");
+      // let deletedata = [...datastate];
 
-  //    let filterdata = deletedata.filter(item => item.id !== delet_id)
+    //  let filterdata = deletedata.filter(item => item.id !== delet_id)
+  dispatch(deletetransactiondata({data:delet_id}))
+    //  setDatastate(filterdata)
 
-  //    setDatastate(filterdata)
-
-  // }
+  }
 
   // useEffect(() => {
 

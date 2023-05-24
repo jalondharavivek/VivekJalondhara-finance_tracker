@@ -3,7 +3,8 @@ import { useState } from "react";
 import "../../../assets/style/Finance.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import { deletetransactiondata } from "../../../store/slices/Tradet";
+import { useDispatch, useSelector } from "react-redux";
 
 // import AddTransaction from "./Addtransaction";
 const Financetrackerform = (prop) => {
@@ -19,6 +20,7 @@ const Financetrackerform = (prop) => {
   const recordsPerPage = 3;
   const [records, setRecords] = useState([]);
   const [page, setPage] = useState(0);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const lastindex = currentPage * recordsPerPage;
@@ -167,6 +169,15 @@ const Financetrackerform = (prop) => {
       i,
     });
   };
+  function deleterecord(delet_id) {
+    console.log(delet_id,"delet_id");
+    // let deletedata = [...datastate];
+
+  //  let filterdata = deletedata.filter(item => item.id !== delet_id)
+dispatch(deletetransactiondata({data:delet_id}))
+  //  setDatastate(filterdata)
+
+}
   // function deleterecord(delet_id) {
   //   setDelet(delet_id);
   //   console.log(delet_id, "delet_id");
@@ -300,7 +311,9 @@ const Financetrackerform = (prop) => {
                   </p>
                   <p
                     className="actionbutton"
-                   
+                    onClick={() =>
+                      deleterecord( addtransaction.id)
+                    }
                   >
                     Delete
                   </p>
