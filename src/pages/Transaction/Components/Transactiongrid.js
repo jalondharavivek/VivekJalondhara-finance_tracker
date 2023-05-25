@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import "../../../assets/style/Finance.css";
+import "../../../assets/style/Finance.css"
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { deletetransactiondata } from "../../../store/slices/Tradet";

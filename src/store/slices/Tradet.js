@@ -43,6 +43,7 @@ const transactionSlice = createSlice({
       console.log(deleteid.data,"delet");
       // let index = state.findIndex((x) => x.id === deleteid);
       let filterdata = state.filter(item => item.id !== deleteid.data)
+      console.log(filterdata,"vivekdelet");
       return filterdata
       // return state.splice(index, 1);
     },

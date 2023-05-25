@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useSelector } from "react-redux";
 import { useCookies } from 'react-cookie';
-  var Cookies = require("js-cookie");
+var Cookies = require("js-cookie");
 
 const Login = () => {
   const navigate = useNavigate();

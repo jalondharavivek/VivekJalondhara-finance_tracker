@@ -9,7 +9,7 @@ import { deletetransactiondata } from "../../../store/slices/Tradet";
 import { selectgroupby } from "../../../utills/constants";
 const Mainfinance = () => {
   const transactionalldata = useSelector((state) => state.transactions);
-  console.log(transactionalldata.receipt, "traaaaa");
+
   const dispatch = useDispatch();
   const [alltransaction, setAlltransaction] = useState([]);
   const [groupby, setGroupby] = useState([]);
@@ -50,14 +50,13 @@ const Mainfinance = () => {
   }
   const transactiondata = useSelector((state) => state.transactions);
 
-    function deleterecord(delet_id) {
-      console.log(delet_id,"delet_id");
-      // let deletedata = [...datastate];
+  function deleterecord(delet_id) {
+    console.log(delet_id, "delet_id");
+    // let deletedata = [...datastate];
 
     //  let filterdata = deletedata.filter(item => item.id !== delet_id)
-  dispatch(deletetransactiondata({data:delet_id}))
+    dispatch(deletetransactiondata({ data: delet_id }));
     //  setDatastate(filterdata)
-
   }
 
   // useEffect(() => {
