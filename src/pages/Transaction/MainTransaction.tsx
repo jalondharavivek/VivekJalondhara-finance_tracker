@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 
 import Financetrackerform from "./Transactiongrid";
-// import "../../../assets/style/Finance.css                                                                                                                                                                                     ";
-import { useDispatch, useSelector } from "react-redux";
+                                                                                                                                                                                 
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deletetransactiondata } from "../../../store/slices/Tradet";
-import { selectgroupby } from "../../../utills/constants";
+// import { deletetransactiondata } from "../../../store/slices/Tradet";
+import { selectgroupby } from "../../utills/constants";
 const Mainfinance = () => {
-  const transactionalldata = useSelector((state) => state.transactions);
-
-  const dispatch = useDispatch();
+  const transactionalldata = useSelector((state : any) => state.transactions);
+  console.log(transactionalldata,"vivderjk");
+  
   const [alltransaction, setAlltransaction] = useState([]);
   const [groupby, setGroupby] = useState([]);
   const [grp, setGrp] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["Token"]);
+//   const [cookies, setCookie, removeCookie] = useCookies(["Token"]);
   var Cookies = require("js-cookie");
 
   const navigate = useNavigate();
   useEffect(() => {
-    setAlltransaction(transactionalldata);
+    setAlltransaction(transactionalldata );
   }, [transactionalldata]);
 
   const logout = () => {
@@ -31,11 +31,11 @@ const Mainfinance = () => {
     navigate("addtransaction");
   };
 
-  function group(event) {
+  function group(event : any) {
     const grouptype = event.target.value;
 
-    const groupBy = (array, key) => {
-      let groupbydata = array.reduce((result, currentValue) => {
+    const groupBy = (array : any, key : any) => {
+      let groupbydata = array.reduce((result : any, currentValue : any) => {
         (result[currentValue[key]] = result[currentValue[key]] || []).push(
           currentValue
         );
@@ -48,16 +48,16 @@ const Mainfinance = () => {
     setGroupby(personGroupedByColor);
     setGrp(true);
   }
-  const transactiondata = useSelector((state) => state.transactions);
+//   const transactiondata = useSelector((state) => state.transactions);
 
-  function deleterecord(delet_id) {
-    console.log(delet_id, "delet_id");
-    // let deletedata = [...datastate];
+//   function deleterecord(delet_id) {
+//     console.log(delet_id, "delet_id");
+//     // let deletedata = [...datastate];
 
-    //  let filterdata = deletedata.filter(item => item.id !== delet_id)
-    dispatch(deletetransactiondata({ data: delet_id }));
-    //  setDatastate(filterdata)
-  }
+//     //  let filterdata = deletedata.filter(item => item.id !== delet_id)
+//     dispatch(deletetransactiondata({ data: delet_id }));
+//     //  setDatastate(filterdata)
+//   }
 
   // useEffect(() => {
 

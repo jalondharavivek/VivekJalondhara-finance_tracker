@@ -1,11 +1,30 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React from "react";
-import "../../../assets/style/view.css";
-const Viewtransaction = (index) => {
+import "../../assets/style/view.css"
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+const Viewtransaction = () => {
   const navigate = useNavigate();
-  const viewdata = useLocation(index);
-  console.log(viewdata);
-  console.log(viewdata.state.receipt, "Sfsfsfsf");
+  // const viewdata = useLocation(index);
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  const params = useParams();
+  const transactionalldata = useSelector((state : any) => state.transactions);
+console.log(transactionalldata,"dataview");
+  
+  console.log("log");
+  
+  console.log(params.id,"log");
+const id : any =  params.id;
+      // let index = state.findIndex((x) => x.id === deleteid);
+
+const viewid = id - 1
+
+ 
+   
+ const tradara = transactionalldata[viewid] 
+console.log(tradara.id,"iddd  ");
+
+  
   const backtransactionpage = () => {
     navigate("/");
   };
@@ -18,51 +37,52 @@ const Viewtransaction = (index) => {
         <div className="viewmain">
           <table className="vvv">
             <tr>
-              <td> Id:{viewdata.state.id}</td>
+              <td> Id:{tradara.id}</td>
             </tr>
             <tr>
               <td>
                 <label>
-                  Transaction Date :- {viewdata.state.transactiondate}{" "}
+
+                  Transaction Date :- {tradara.transactiondate}{" "}
                 </label>
               </td>
             </tr>
             <tr>
               <td>
-                <label>Month Year :- {viewdata.state.monthyear} </label>
+                <label>Month Year :- {tradara.monthyear} </label>
               </td>
             </tr>
             <tr>
               <td>
                 {" "}
                 <label>
-                  transactiontype :- {viewdata.state.transactiontype}{" "}
+                  transactiontype :- {tradara.transactiontype}{" "}
                 </label>
               </td>
             </tr>
             <tr>
               <td>
                 {" "}
-                <label>From Account :- {viewdata.state.fromaccount} </label>
+                <label>From Account :- {tradara.fromaccount} </label>
               </td>
             </tr>
             <tr>
               <td>
                 {" "}
-                <label>To Acccount :- {viewdata.state.toaccount} </label>
+                <label>To Acccount :- {tradara.toaccount} </label>
               </td>
             </tr>
             <tr>
               <td>
                 {" "}
                 <label>Receipt :- </label>
-                <img src={viewdata.state.receipt} alt="" className="IMGWIDTH"></img>
+                <img src={tradara.receipt} alt="" className="IMGWIDTH"></img>
               </td>
             </tr>
             <tr>
               <td>
                 {" "}
-                <label>Notes :- {viewdata.state.notes} </label>
+                <label>Notes :- {tradara.notes} </label>
               </td>
             </tr>
           </table>

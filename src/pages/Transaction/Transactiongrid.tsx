@@ -1,26 +1,30 @@
 import React from "react";
 import { useState } from "react";
-import "../../../assets/style/Finance.css"
+
+import "../../assets/style/Finance.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { deletetransactiondata } from "../../../store/slices/Tradet";
-import { useDispatch, useSelector } from "react-redux";
+import { deletetransactiondata } from "../../../src/store/slice/transactionsl";
+import { useDispatch } from "react-redux";
+// import { number, number } from "yup";
 
 // import AddTransaction from "./Addtransaction";
-const Financetrackerform = (prop) => {
+const Financetrackerform = (prop: any) => {
+  console.log(prop, "prop");
+
   const [alltransaction, setAlltransaction] = useState([]);
   const [sortprevalue, setPrevalue] = useState("");
   const [order, setOrder] = useState(0);
 
   const [shorto, setShorto] = useState("");
-
+  const [shortonum, setShortonum] = useState("");
   const [filterval, setFilval] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [delet, setDelet] = useState(0);
+  const [] = useState(0);
   const recordsPerPage = 3;
   const [records, setRecords] = useState([]);
   const [page, setPage] = useState(0);
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
     const lastindex = currentPage * recordsPerPage;
@@ -30,7 +34,9 @@ const Financetrackerform = (prop) => {
 
     console.log("order=", order);
     if (filterval) {
-      const searchdata = alltransaction.filter((item) => {
+      const searchdata = alltransaction.filter((item: any) => {
+        console.log(item.amount,"item");
+        
         return (
           item.monthyear.toLowerCase().includes(filterval?.toLowerCase()) ||
           item.transactiontype
@@ -38,62 +44,62 @@ const Financetrackerform = (prop) => {
             .includes(filterval?.toLowerCase()) ||
           item.notes.toLowerCase().includes(filterval?.toLowerCase()) ||
           item.fromaccount.toLowerCase().includes(filterval?.toLowerCase()) ||
-          item.toaccount.toLowerCase().includes(filterval?.toLowerCase()) ||
-          item.amount.toLowerCase().includes(filterval?.toLowerCase())
+          item.toaccount.toLowerCase().includes(filterval?.toLowerCase())
+        ||
+           item.amount.toString().toLowerCase().includes(filterval?.toLowerCase())
+
+       
+        
         );
       });
       data = searchdata;
     } else {
       data = alltransaction;
     }
+if(filterval){
+}
     if (shorto) {
       const col = shorto;
 
       if (order === 1) {
-        const sorted = [...data].sort((a, b) =>
+        const sorted = [...data].sort((a: any, b: any) =>
           a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
         );
         data = sorted;
       } else if (order === 2) {
-        const sorted = [...data].sort((a, b) =>
+        const sorted = [...data].sort((a: any, b: any) =>
           a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
         );
         data = sorted;
       }
     }
-    if (shorto) {
+    if (shortonum) {
       if (order === 1) {
-        const sorted = [...data].sort((a, b) => a.amount - b.amount);
+        const sorted = [...data].sort((a: any, b: any) => a[shorto]?.amount - b[shorto]?.amount);
         data = sorted;
       } else if (order === 2) {
-        const sorted = [...data].sort((a, b) => b.amount - a.amount);
+        const sorted = [...data].sort((a: any, b: any) => b[shorto].amount - a[shorto].amount);
         data = sorted;
       }
     }
 
-    setRecords(data.slice(firstindex, lastindex));
-    setPage(Math.ceil(data.length / recordsPerPage));
+    setRecords(data?.slice(firstindex, lastindex));
+    setPage(Math.ceil(data?.length / recordsPerPage));
   }, [currentPage, alltransaction, filterval, shorto, order]);
 
   const number = [...Array(page + 1).keys()].slice(1);
 
   const navigate = useNavigate();
 
-  const addtransaction = () => {
-    navigate("/addtransaction");
-  };
-  
 
   useEffect(() => {
-
-      setAlltransaction(prop.all);
-    
-  }, [prop ]);
+    setAlltransaction(prop.all);
+  }, [prop]);
 
   //   // for (let key of Object.keys(sorted)) {
   //   //   return [key, sorted[key]];
 
-  const shortfun = (sort) => {
+  const shortfun = (sort: any) => {
     console.log("sortprevalue=", sortprevalue);
     console.log("sort", sort);
     if (sortprevalue === "") {
@@ -122,12 +128,12 @@ const Financetrackerform = (prop) => {
     }
   };
 
-  const numericamount = (sort) => {
+  const numericamount = (sort: any) => {
     console.log("sortprevalue=", sortprevalue);
     console.log("sort", sort);
     if (sortprevalue === "") {
       setOrder(1);
-      setShorto(sort);
+      setShortonum(sort);
       setPrevalue(sort);
     } else if (sortprevalue === sort) {
       if (order === 1) {
@@ -142,42 +148,43 @@ const Financetrackerform = (prop) => {
       setPrevalue(sort);
     } else if (sortprevalue !== sort) {
       setOrder(1);
-      setShorto(sort);
+      setShortonum(sort);
       setPrevalue(sort);
     } else {
       setOrder(0);
-      setShorto(sort);
+      setShortonum(sort);
       setPrevalue(sort);
     }
   };
 
   // };
-  const changepage = (id) => {
+  const changepage = (id: number) => {
     setCurrentPage(id);
   };
 
-  const editdata = (AddTransaction, i, ireceipt) => {
+  const editdata = (AddTransaction: any, i: any, ireceipt: any) => {
     navigate(`/transaction/edit/${AddTransaction.id}`, {
       state: AddTransaction.id,
-      AddTransaction,
-      i,
+      //   AddTransaction
     });
   };
-  const viewd = (AddTransaction, i, ireceipt) => {
+  const viewd = (AddTransaction: any) => {
     navigate(`/transaction/view/${AddTransaction.id}`, {
       state: AddTransaction,
-      i,
     });
   };
-  function deleterecord(delet_id) {
-    console.log(delet_id,"delet_id");
-    // let deletedata = [...datastate];
+  function deleterecord(delet_id: number) {
+    console.log(delet_id, "delet_id");
+    //  let deletedata = [...datastate];
 
-  //  let filterdata = deletedata.filter(item => item.id !== delet_id)
-dispatch(deletetransactiondata({data:delet_id}))
-  //  setDatastate(filterdata)
-
-}
+    // let filterdata = deletedata.filter(item => item.id !== delet_id)
+    dispatch(
+      deletetransactiondata(
+        delet_id,
+      )
+    );
+    //  setDatastate(filterdata)
+  }
   // function deleterecord(delet_id) {
   //   setDelet(delet_id);
   //   console.log(delet_id, "delet_id");
@@ -186,7 +193,7 @@ dispatch(deletetransactiondata({data:delet_id}))
   //   let filterdata = deletedata.filter((item) => item.id !== delet_id);
 
   //   console.log(filterdata, "vv");
-  //   setDatastate(filterdata);                                                                                                                                                                                                                                                                               
+  //   setDatastate(filterdata);
   // }
   return (
     <div className="maindisplay">
@@ -194,7 +201,7 @@ dispatch(deletetransactiondata({data:delet_id}))
         <label>Search :</label>{" "}
         <input
           value={filterval}
-          onInput={(e) => setFilval(e.target.value)}
+          onInput={(e: any) => setFilval(e.target.value)}
         ></input>
       </div>
 
@@ -205,11 +212,6 @@ dispatch(deletetransactiondata({data:delet_id}))
               <th>id</th>
               <th onClick={() => shortfun("transactiondate")}>
                 Transaction Date{" "}
-                {order === "default" ? (
-                  <i className="arrow up"></i>
-                ) : (
-                  <i className="arrow down"></i>
-                )}{" "}
               </th>
               <th
                 onClick={() => {
@@ -217,67 +219,22 @@ dispatch(deletetransactiondata({data:delet_id}))
                 }}
               >
                 Month Year{" "}
-                {order === "ASC" ? (
-                  <i className="arrow up"></i>
-                ) : (
-                  <i className="arrow down"></i>
-                )}{" "}
               </th>
               <th onClick={() => shortfun("transactiontype")}>
                 Transacton Type{" "}
-                {order === "ASC" ? (
-                  <i className="arrow up"></i>
-                ) : (
-                  <i className="arrow down"></i>
-                )}
               </th>
-              <th onClick={() => shortfun("fromaccount")}>
-                From Account{" "}
-                {order === "ASC" ? (
-                  <i className="arrow up"></i>
-                ) : (
-                  <i className="arrow down"></i>
-                )}
-              </th>
-              <th onClick={() => shortfun("toaccount")}>
-                To Acccount{" "}
-                {order === "ASC" ? (
-                  <i className="arrow up"></i>
-                ) : (
-                  <i className="arrow down"></i>
-                )}
-              </th>
-              <th onClick={() => numericamount("amount")}>
-                Amount{" "}
-                {order === "ASC" ? (
-                  <i className="arrow up"></i>
-                ) : (
-                  <i className="arrow down"></i>
-                )}
-              </th>
-              <th onClick={() => shortfun("receipt")}>
-                Receipt{" "}
-                {order === "ASC" ? (
-                  <i className="arrow up"></i>
-                ) : (
-                  <i className="arrow down"></i>
-                )}
-              </th>
-              <th onClick={() => shortfun("notes")}>
-                Notes{" "}
-                {order === "ASC" ? (
-                  <i className="arrow up"></i>
-                ) : (
-                  <i className="arrow down"></i>
-                )}
-              </th>
+              <th onClick={() => shortfun("fromaccount")}>From Account </th>
+              <th onClick={() => shortfun("toaccount")}>To Acccount </th>
+              <th onClick={() => numericamount("amount")}>Amount </th>
+              <th onClick={() => shortfun("receipt")}>Receipt </th>
+              <th onClick={() => shortfun("notes")}>Notes </th>
               <th>Action </th>
             </tr>
           </thead>
           <tbody>
-            {records.map((addtransaction, index) => (
+            {records.map((addtransaction: any, index) => (
               <tr key={index}>
-                <td>{index}</td>
+                <td>{addtransaction.id}</td>
                 <td>{addtransaction.transactiondate} </td>
                 <td>{addtransaction.monthyear}</td>
                 <td>{addtransaction.transactiontype}</td>
@@ -296,7 +253,7 @@ dispatch(deletetransactiondata({data:delet_id}))
                   <p
                     className="actionbutton"
                     onClick={() =>
-                      viewd(addtransaction, index, addtransaction.receipt)
+                      viewd(addtransaction)
                     }
                   >
                     View
@@ -311,9 +268,7 @@ dispatch(deletetransactiondata({data:delet_id}))
                   </p>
                   <p
                     className="actionbutton"
-                    onClick={() =>
-                      deleterecord( addtransaction.id)
-                    }
+                    onClick={() => deleterecord(addtransaction.id)}
                   >
                     Delete
                   </p>
@@ -328,7 +283,7 @@ dispatch(deletetransactiondata({data:delet_id}))
               <a className="page-link">previous</a>
             </li>
 
-            {number.map((n, i) => (
+            {number.map((n: any, i: any) => (
               <li
                 className={`page-item ${currentPage === n ? "active" : ""}`}
                 key={i}
