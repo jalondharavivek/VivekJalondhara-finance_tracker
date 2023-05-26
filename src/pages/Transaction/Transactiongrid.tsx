@@ -35,8 +35,8 @@ const Financetrackerform = (prop: any) => {
     console.log("order=", order);
     if (filterval) {
       const searchdata = alltransaction.filter((item: any) => {
-        console.log(item.amount,"item");
-        
+        console.log(item.amount, "item");
+
         return (
           item.monthyear.toLowerCase().includes(filterval?.toLowerCase()) ||
           item.transactiontype
@@ -44,20 +44,19 @@ const Financetrackerform = (prop: any) => {
             .includes(filterval?.toLowerCase()) ||
           item.notes.toLowerCase().includes(filterval?.toLowerCase()) ||
           item.fromaccount.toLowerCase().includes(filterval?.toLowerCase()) ||
-          item.toaccount.toLowerCase().includes(filterval?.toLowerCase())
-        ||
-           item.amount.toString().toLowerCase().includes(filterval?.toLowerCase())
-
-       
-        
+          item.toaccount.toLowerCase().includes(filterval?.toLowerCase()) ||
+          item.amount
+            .toString()
+            .toLowerCase()
+            .includes(filterval?.toLowerCase())
         );
       });
       data = searchdata;
     } else {
       data = alltransaction;
     }
-if(filterval){
-}
+    if (filterval) {
+    }
     if (shorto) {
       const col = shorto;
 
@@ -75,10 +74,14 @@ if(filterval){
     }
     if (shortonum) {
       if (order === 1) {
-        const sorted = [...data].sort((a: any, b: any) => a[shorto]?.amount - b[shorto]?.amount);
+        const sorted = [...data].sort(
+          (a: any, b: any) => a[shorto]?.amount - b[shorto]?.amount
+        );
         data = sorted;
       } else if (order === 2) {
-        const sorted = [...data].sort((a: any, b: any) => b[shorto].amount - a[shorto].amount);
+        const sorted = [...data].sort(
+          (a: any, b: any) => b[shorto].amount - a[shorto].amount
+        );
         data = sorted;
       }
     }
@@ -90,7 +93,6 @@ if(filterval){
   const number = [...Array(page + 1).keys()].slice(1);
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     setAlltransaction(prop.all);
@@ -152,7 +154,7 @@ if(filterval){
       setPrevalue(sort);
     } else {
       setOrder(0);
-      setShortonum(sort);
+
       setPrevalue(sort);
     }
   };
@@ -178,11 +180,7 @@ if(filterval){
     //  let deletedata = [...datastate];
 
     // let filterdata = deletedata.filter(item => item.id !== delet_id)
-    dispatch(
-      deletetransactiondata(
-        delet_id,
-      )
-    );
+    dispatch(deletetransactiondata(delet_id));
     //  setDatastate(filterdata)
   }
   // function deleterecord(delet_id) {
@@ -195,6 +193,19 @@ if(filterval){
   //   console.log(filterdata, "vv");
   //   setDatastate(filterdata);
   // }
+
+
+  function shortarrow () {
+    if(shorto === "monthyear" &&  order === 1 || shorto === "transactiondate" &&  order === 1 || shorto === "transactiontype" &&  order === 1 ||shorto === "fromaccount" &&  order === 1 || shorto === "toaccount" &&  order === 1){
+      return "^"
+    }else if(shorto === "monthyear" &&  order === 2 || shorto === "transactiondate" &&  order === 2 || shorto === "transactiontype" &&  order === 2 ||shorto === "fromaccount" &&  order === 2 || shorto === "toaccount" &&  order === 2){
+      return ">"
+    }else{
+      return ""
+    }
+  }  
+
+
   return (
     <div className="maindisplay">
       <div className="addandgroupby">
@@ -215,13 +226,13 @@ if(filterval){
               </th>
               <th
                 onClick={() => {
-                  shortfun("monthyear");
+                  shortfun("monthyear") ;
                 }}
               >
-                Month Year{" "}
+                Month Year{" "} {shortarrow()  }
               </th>
               <th onClick={() => shortfun("transactiontype")}>
-                Transacton Type{" "}
+                Transacton Type{" "}{shortarrow()  }
               </th>
               <th onClick={() => shortfun("fromaccount")}>From Account </th>
               <th onClick={() => shortfun("toaccount")}>To Acccount </th>
@@ -252,9 +263,7 @@ if(filterval){
                   {" "}
                   <p
                     className="actionbutton"
-                    onClick={() =>
-                      viewd(addtransaction)
-                    }
+                    onClick={() => viewd(addtransaction)}
                   >
                     View
                   </p>

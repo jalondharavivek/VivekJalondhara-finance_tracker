@@ -10,6 +10,7 @@ const Viewtransaction = () => {
   const params = useParams();
   const transactionalldata = useSelector((state : any) => state.transactions);
 console.log(transactionalldata,"dataview");
+  console.log();
   
   console.log("log");
   
@@ -22,7 +23,6 @@ const viewid = id - 1
  
    
  const tradara = transactionalldata[viewid] 
-console.log(tradara.id,"iddd  ");
 
   
   const backtransactionpage = () => {

@@ -2,25 +2,31 @@ import React, { useState, useEffect } from "react";
 // import { useCookies } from "react-cookie";
 
 import Financetrackerform from "./Transactiongrid";
-                                                                                                                                                                                 
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // import { deletetransactiondata } from "../../../store/slices/Tradet";
 import { selectgroupby } from "../../utills/constants";
 const Mainfinance = () => {
-  const transactionalldata = useSelector((state : any) => state.transactions);
-  console.log(transactionalldata,"vivderjk");
-  
-  const [alltransaction, setAlltransaction] = useState([]);
+  const transactionalldata = useSelector((state: any) => state.transactions);
+  console.log(transactionalldata, "vivekdelet100");
+
+  const [alltransaction, setAlltransaction] = useState<any[]>([]);
   const [groupby, setGroupby] = useState([]);
   const [grp, setGrp] = useState(false);
-//   const [cookies, setCookie, removeCookie] = useCookies(["Token"]);
+  const [grpval, setGrpval] = useState();
+  //   const [cookies, setCookie, removeCookie] = useCookies(["Token"]);
   var Cookies = require("js-cookie");
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    setAlltransaction(transactionalldata );
+    if (transactionalldata) {
+      setAlltransaction([...transactionalldata]);
+    }
   }, [transactionalldata]);
+
+  console.log(alltransaction, "vivekdelet100up");
 
   const logout = () => {
     Cookies.remove("Token");
@@ -31,38 +37,53 @@ const Mainfinance = () => {
     navigate("addtransaction");
   };
 
-  function group(event : any) {
+  const groupBy = (array: any, key: any) => {
+    let groupbydata = array.reduce((grpres: any, curvaluegrp: any) => {
+      (grpres[curvaluegrp[key]] = grpres[curvaluegrp[key]] || []).push(
+        curvaluegrp
+      );
+      return grpres;
+    }, []);
+    return groupbydata;
+  };
+
+  function group(event: any) {
+    setGrpval(event.target.value)
     const grouptype = event.target.value;
-
-    const groupBy = (array : any, key : any) => {
-      let groupbydata = array.reduce((result : any, currentValue : any) => {
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
-        return result;
-      }, []);
-      return groupbydata;
-    };
-    const personGroupedByColor = groupBy(alltransaction, grouptype);
-
-    setGroupby(personGroupedByColor);
-    setGrp(true);
+    console.log(grouptype, "value");
   }
-//   const transactiondata = useSelector((state) => state.transactions);
+  useEffect(() => {
+    if(grpval){
+    if (grpval === undefined || grpval === "") {
+      setGrp(false);
+      setGrpval(grpval)
+    } else {
+      const grpvaldata = groupBy(alltransaction, grpval);
+      console.log(grpvaldata, "vivekdelet1logup");
 
-//   function deleterecord(delet_id) {
-//     console.log(delet_id, "delet_id");
-//     // let deletedata = [...datastate];
+      setGroupby(grpvaldata);
+      setGrp(true);
+      setGrpval(grpval)
+    }
+}
+    
+  }, [grpval,alltransaction ]);
+  //   const transactiondata = useSelector((state) => state.transactions);
 
-//     //  let filterdata = deletedata.filter(item => item.id !== delet_id)
-//     dispatch(deletetransactiondata({ data: delet_id }));
-//     //  setDatastate(filterdata)
-//   }
+  //   function deleterecord(delet_id) {
+  //     console.log(delet_id, "delet_id");
+  //     // let deletedata = [...datastate];
+
+  //     //  let filterdata = deletedata.filter(item => item.id !== delet_id)
+  //     dispatch(deletetransactiondata({ data: delet_id }));
+  //     //  setDatastate(filterdata)
+  //   }
 
   // useEffect(() => {
 
   //   setAlltransaction(datastate);
   // }, [datastate]);
+
   return (
     <div>
       <div className="financetrackerheading">
@@ -90,9 +111,6 @@ const Mainfinance = () => {
             className="searchspan"
             onChange={group}
           >
-            <option value="default" disabled>
-              select......{" "}
-            </option>
             {selectgroupby.map((key) => (
               <option key={key.label} value={key.value}>
                 {key.label}
@@ -107,7 +125,11 @@ const Mainfinance = () => {
           <div>
             {Object.values(groupby).map((element, index) => (
               <div key={index}>
-                <h1>{Object.keys(groupby)[index]}</h1>
+                {{ groupby: undefined } ? (
+                  <h1>{Object.keys(groupby)[index]} </h1>
+                ) : (
+                  ""
+                )}
                 <Financetrackerform all={element} />
               </div>
             ))}
