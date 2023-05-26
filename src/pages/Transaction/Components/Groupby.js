@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 const Mainfinance = () => {
   const [alltransaction, setAlltransaction] = useState([]);
   const [groupby, setGroupby] = useState([]);
-  const [grp, setGrp] = useState(false);
 
+  const [grp, setGrp] = useState(false);
+  const [grpval, setGrpval] = useState();
   const navigate = useNavigate();
   useEffect(() => {
     setAlltransaction(
@@ -24,24 +25,36 @@ const Mainfinance = () => {
   };
 
 
+  const groupBy = (array, key) => {
+    let groupbydata = array.reduce((grpres, curvaluegrp) => {
+      (grpres[curvaluegrp[key]] = grpres[curvaluegrp[key]] || []).push(
+        curvaluegrp
+      );
+      return grpres;
+    }, []);
+    return groupbydata;
+  };
+
   function group(event) {
+    setGrpval(event.target.value)
     const grouptype = event.target.value;
-
-    const groupBy = (array, key) => {
-      let groupbydata = array.reduce((result, currentValue) => {
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
-        return result;
-      }, []);
-      return groupbydata;
-    };
-    const personGroupedByColor = groupBy(alltransaction, grouptype);
-
-    setGroupby(personGroupedByColor);
-    setGrp(true);
+    console.log(grouptype, "value");
   }
+  useEffect(() => {
+    if(grpval){
+    if (grpval === "none" || grpval === "") {
+      setGrp(false);
+    } else {
+      const valgrpdata = groupBy(alltransaction, grpval);
+      console.log(valgrpdata, "vivekdelet1logup");
 
+      setGroupby(valgrpdata);
+      setGrp(true);
+      setGrpval(grpval)
+    }
+}
+    
+  }, [grpval,alltransaction ]);
   return (
     <div>
       <div className="financetrackerheading">
