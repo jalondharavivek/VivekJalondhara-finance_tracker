@@ -66,7 +66,7 @@ const Register = () => {
     dataa.id = idtransaction + 1;
     console.log(dataa, "1datttaaa");
     dispatch(newuser(dataa));
-    // navigate("/login");
+     navigate("/login");
   };
 
   return (

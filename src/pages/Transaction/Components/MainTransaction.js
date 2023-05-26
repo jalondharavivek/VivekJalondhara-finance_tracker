@@ -11,9 +11,11 @@ const Mainfinance = () => {
   const transactionalldata = useSelector((state) => state.transactions);
 
   const dispatch = useDispatch();
+  const [grp, setGrp] = useState(false);
+  const [grpval, setGrpval] = useState();
   const [alltransaction, setAlltransaction] = useState([]);
   const [groupby, setGroupby] = useState([]);
-  const [grp, setGrp] = useState(false);
+ 
   const [cookies, setCookie, removeCookie] = useCookies(["Token"]);
   var Cookies = require("js-cookie");
 
@@ -30,24 +32,36 @@ const Mainfinance = () => {
   const addtransaction = () => {
     navigate("addtransaction");
   };
+  const groupBy = (array, key) => {
+    let groupbydata = array.reduce((grpres, curvaluegrp) => {
+      (grpres[curvaluegrp[key]] = grpres[curvaluegrp[key]] || []).push(
+        curvaluegrp
+      );
+      return grpres;
+    }, []);
+    return groupbydata;
+  };
 
   function group(event) {
+    setGrpval(event.target.value)
     const grouptype = event.target.value;
-
-    const groupBy = (array, key) => {
-      let groupbydata = array.reduce((result, currentValue) => {
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
-        return result;
-      }, []);
-      return groupbydata;
-    };
-    const personGroupedByColor = groupBy(alltransaction, grouptype);
-
-    setGroupby(personGroupedByColor);
-    setGrp(true);
+    console.log(grouptype, "value");
   }
+  useEffect(() => {
+    if(grpval){
+    if (grpval === "none" || grpval === "") {
+      setGrp(false);
+    } else {
+      const valgrpdata = groupBy(alltransaction, grpval);
+      console.log(valgrpdata, "vivekdelet1logup");
+
+      setGroupby(valgrpdata);
+      setGrp(true);
+      setGrpval(grpval)
+    }
+}
+    
+  }, [grpval,alltransaction ]);
   const transactiondata = useSelector((state) => state.transactions);
 
   function deleterecord(delet_id) {

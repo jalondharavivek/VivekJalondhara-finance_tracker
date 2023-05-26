@@ -242,7 +242,7 @@ dispatch(deletetransactiondata({data:delet_id}))
               <th onClick={() => shortfun("toaccount")}>
                 To Acccount{" "}
                 {order === "ASC" ? (
-                  <i className="arrow up"></i>
+                  <i className="arrow up"></i>  
                 ) : (
                   <i className="arrow down"></i>
                 )}
